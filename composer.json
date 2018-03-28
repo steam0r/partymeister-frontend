@@ -13,7 +13,7 @@
   ],
   "require": {
     "partymeister/core": "0.1.*",
-    "partymeister/competeitions": "0.1.*",
+    "partymeister/competitions": "0.1.*",
     "partymeister/slides": "0.1.*"
   },
   "autoload": {
