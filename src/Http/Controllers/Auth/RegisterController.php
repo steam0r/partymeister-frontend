@@ -5,16 +5,19 @@ namespace Partymeister\Frontend\Http\Controllers\Auth;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Kris\LaravelFormBuilder\FormBuilderTrait;
 use Motor\Backend\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Partymeister\Competitions\Models\AccessKey;
 use Partymeister\Core\Models\Visitor;
 use Partymeister\Frontend\Forms\Frontend\RegisterForm;
 
 class RegisterController extends Controller
 {
+
     /*
     |--------------------------------------------------------------------------
     | Register Controller
@@ -37,6 +40,7 @@ class RegisterController extends Controller
      */
     protected $redirectTo = '/home';
 
+
     /**
      * Get the guard to be used during registration.
      *
@@ -46,6 +50,7 @@ class RegisterController extends Controller
     {
         return Auth::guard('visitor');
     }
+
 
     /**
      * Create a new controller instance.
@@ -57,6 +62,7 @@ class RegisterController extends Controller
         $this->middleware('guest:visitor');
     }
 
+
     /**
      * Show the application registration form.
      *
@@ -64,35 +70,48 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm()
     {
-        $form = $this->form(RegisterForm::class, [
+        $visitor   = null;
+        $showLogin = false;
+        $form      = $this->form(RegisterForm::class, [
             'method'  => 'POST',
             'route'   => 'register',
             'enctype' => 'multipart/form-data',
-            'model' => ['country_iso_3166_1' => 'DE']
+            'model'   => [ 'country_iso_3166_1' => 'DE' ]
         ]);
 
-        return view('partymeister-frontend::auth.register', compact('form'));
+        return view('partymeister-frontend::auth.register', compact('form', 'visitor', 'showLogin'));
     }
+
 
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param  array $data
+     *
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
+            'name'       => 'required|max:255|unique:visitors',
             //'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
+            'password'   => 'required|min:6|confirmed',
+            'access_key' => [
+                'required',
+                'min:8',
+                Rule::exists('access_keys')->where(function ($query) {
+                    $query->where('visitor_id', null);
+                })
+            ]
         ]);
     }
+
 
     /**
      * Handle a registration request for the application.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function register(Request $request)
@@ -103,22 +122,33 @@ class RegisterController extends Controller
 
         $this->guard('visitor')->login($visitor);
 
-        return $this->registered($request, $visitor)
-            ?: redirect($this->redirectPath());
+        return $this->registered($request, $visitor) ?: redirect($this->redirectPath());
     }
+
 
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param  array $data
+     *
      * @return User
      */
     protected function create(array $data)
     {
-        return Visitor::create([
-            'name' => $data['name'],
-            //'email' => $data['email'],
-            'password' => bcrypt($data['password']),
+        $visitor                  = Visitor::create([
+            'name'               => $data['name'],
+            'group'              => $data['group'],
+            'country_iso_3166_1' => $data['country_iso_3166_1'],
+            //'email'              => $data['email'],
+            'password'           => bcrypt($data['password']),
+            'api_token'          => str_random(60),
         ]);
+        $accessKey                = AccessKey::where('access_key', $data['access_key'])->first();
+        $accessKey->visitor_id    = $visitor->id;
+        $accessKey->ip_address    = \Request::ip();
+        $accessKey->registered_at = date('Y-m-d H:i:s');
+        $accessKey->save();
+
+        return $visitor;
     }
 }
