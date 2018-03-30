@@ -18,9 +18,10 @@ class ItemsController extends Controller
         $this->visitor = Auth::guard('visitor')->user();
 
         $itemTypes = ItemType::where('is_visible', true)->orderBy('sort_position', 'ASC')->get();
+		$navHighlight = 'items';
 
         return view('partymeister-frontend::frontend.items.index',
-            [ 'visitor' => $this->visitor, 'itemTypes' => $itemTypes ]);
+            [ 'visitor' => $this->visitor, 'itemTypes' => $itemTypes, 'navHighlight' => $navHighlight ]);
     }
 
 }

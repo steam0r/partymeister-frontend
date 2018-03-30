@@ -1,3 +1,4 @@
+<h1>Upload entry</h1>
 {!! form_start($form) !!}
 <div class="@boxWrapper box-primary">
     <div class="@boxHeader with-border">
@@ -76,7 +77,7 @@
                     $i = 1;
                 @endphp
                 @while ($form->has('work_stage_'.$i))
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                         {!! form_row($form->{'work_stage_'.$i}) !!}
                     </div>
                     @php

@@ -15,6 +15,6 @@ class RegisterForm extends Form
             ->add('country_iso_3166_1', 'select', ['label' => trans('motor-backend::backend/global.address.country'), 'choices' => \Symfony\Component\Intl\Intl::getRegionBundle()->getCountryNames()])
             ->add('password', 'password', ['value' => '', 'label' => trans('motor-backend::backend/users.password'), 'rules' => 'required'])
             ->add('password_confirmation', 'password', ['value' => '', 'label' => trans('motor-backend::backend/users.password_confirm'), 'rules' => 'required'])
-            ->add('submit', 'submit', ['attr' => ['class' => 'btn btn-primary'], 'label' => trans('partymeister-core::backend/visitors.save')]);
+            ->add('submit', 'submit', ['attr' => ['class' => 'btn btn-primary btn-block'], 'label' => 'Register']);
     }
 }

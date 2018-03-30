@@ -5,7 +5,7 @@
     @foreach ($itemTypes as $itemType)
         <h3>{{$itemType->name}}</h3>
         @if ($itemType->items->count() > 0)
-            <table class="table table-striped mb-5">
+            <table class="table mb-5">
                 <thead>
                 <tr>
                     <th scope="col">Name</th>
@@ -17,8 +17,10 @@
                 <tr>
                     <td>
                         <strong>{{$item->name}}</strong>
-                        <br>
+                        @if (strlen($item->description) > 2)
+                            <br>
                         {{$item->description}}
+                        @endif
                     </td>
                     <td class="text-right">
                         <strong>{{number_format($item->price_with_vat, 2, ',', '.')}} &euro;</strong>

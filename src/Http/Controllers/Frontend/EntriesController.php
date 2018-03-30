@@ -54,7 +54,8 @@ class EntriesController extends Controller
         $form = $this->form(EntryForm::class, [
             'method'  => 'POST',
             'route'   => 'frontend.entries.store',
-            'enctype' => 'multipart/form-data'
+            'enctype' => 'multipart/form-data',
+//			'model' => ['author_country_iso_3166_1' => 'DE', 'composer_country_iso_3166_1' => 'DE']
         ]);
 
         return view('partymeister-frontend::frontend.entries.create', compact('form', 'visitor'));
@@ -95,9 +96,13 @@ class EntriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Entry $record)
     {
-        //
+		$visitor = Auth::guard('visitor')->user();
+        if ($visitor->id != $record->visitor_id) {
+        	return redirect('home');
+		}
+		return view('partymeister-frontend::frontend.entries.show', compact('form', 'visitor', 'record'));
     }
 
 
@@ -110,6 +115,9 @@ class EntriesController extends Controller
      */
     public function edit(Entry $record)
     {
+    	if (!$record->competition->upload_enabled && !$record->upload_enabled) {
+    		return redirect('entries');
+		}
         $visitor = Auth::guard('visitor')->user();
         $form = $this->form(EntryForm::class, [
             'method'  => 'PATCH',
@@ -132,6 +140,9 @@ class EntriesController extends Controller
      */
     public function update(EntryRequest $request, Entry $record)
     {
+		if (!$record->competition->upload_enabled && !$record->upload_enabled) {
+			return redirect('entries');
+		}
         $form = $this->form(EntryForm::class);
 
         // It will automatically use current request, get the rules, and do the validation

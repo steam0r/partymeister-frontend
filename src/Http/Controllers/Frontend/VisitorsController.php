@@ -5,9 +5,10 @@ namespace Partymeister\Frontend\Http\Controllers\Frontend;
 use Kris\LaravelFormBuilder\FormBuilderTrait;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Partymeister\Core\Models\Visitor;
 use Partymeister\Frontend\Forms\Frontend\LoginForm;
 
-class FrontendController extends Controller
+class VisitorsController extends Controller
 {
 
 	use FormBuilderTrait;
@@ -18,15 +19,11 @@ class FrontendController extends Controller
     public function index()
     {
         $visitor = Auth::guard('visitor')->user();
-        $navHighlight = 'home';
+        $navHighlight = 'visitors';
 
-		$loginForm      = $this->form(LoginForm::class, [
-			'method'  => 'POST',
-			'route'   => 'login',
-			'enctype' => 'multipart/form-data'
-		]);
+        $visitors = Visitor::orderBy('created_at', 'DESC')->get();
 
-		return view('partymeister-frontend::frontend.home', compact('loginForm', 'visitor', 'showLogin', 'navHighlight'));
+		return view('partymeister-frontend::frontend.visitors', compact('visitors', 'visitor', 'navHighlight'));
     }
 
 }

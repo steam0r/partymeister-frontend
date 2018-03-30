@@ -2,6 +2,7 @@
 
 namespace Partymeister\Frontend\Forms\Frontend;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Input;
 use Kris\LaravelFormBuilder\Form;
@@ -34,22 +35,26 @@ class EntryForm extends Form
             ->add('organizer_description', 'textarea', ['label' => trans('partymeister-competitions::backend/entries.organizer_description')])
             ->add('custom_option', 'text', ['label' => trans('partymeister-competitions::backend/entries.custom_option')])
 
-            ->add('author_name', 'text', ['label' => trans('partymeister-competitions::backend/entries.name')])
-            ->add('author_email', 'text', ['label' => trans('partymeister-competitions::backend/entries.email')])
-            ->add('author_phone', 'text', ['label' => trans('partymeister-competitions::backend/entries.phone')])
-            ->add('author_address', 'text', ['label' => trans('partymeister-competitions::backend/entries.address')])
-            ->add('author_zip', 'text', ['label' => trans('partymeister-competitions::backend/entries.zip')])
-            ->add('author_city', 'text', ['label' => trans('partymeister-competitions::backend/entries.city')])
-            ->add('author_country_iso_3166_1', 'select', ['label' => trans('partymeister-competitions::backend/entries.country'), 'choices' => \Symfony\Component\Intl\Intl::getRegionBundle()->getCountryNames()])
+            ->add('author_name', 'text', ['label' => trans('partymeister-competitions::backend/entries.name'), 'rules' =>  'required'])
+            ->add('author_email', 'email', ['label' => trans('partymeister-competitions::backend/entries.email'), 'rules' =>  ['required']])
+            ->add('author_phone', 'text', ['label' => trans('partymeister-competitions::backend/entries.phone'), 'rules' =>  'required'])
+            ->add('author_address', 'text', ['label' => trans('partymeister-competitions::backend/entries.address'), 'rules' =>  'required'])
+            ->add('author_zip', 'text', ['label' => trans('partymeister-competitions::backend/entries.zip'), 'rules' =>  'required'])
+            ->add('author_city', 'text', ['label' => trans('partymeister-competitions::backend/entries.city'), 'rules' =>  'required'])
+            ->add('author_country_iso_3166_1', 'select', ['label' => trans('partymeister-competitions::backend/entries.country'), 'default_value' => 'DE', 'choices' => \Symfony\Component\Intl\Intl::getRegionBundle()->getCountryNames()])
             ->add('options', 'form', ['wrapper' => [], 'class' => '\Partymeister\Competitions\Forms\Backend\EntryOptionForm', 'label' => false, 'data' => $data])
-            ->add('submit', 'submit', ['attr' => ['class' => 'btn btn-primary'], 'label' => trans('partymeister-competitions::backend/entries.save')])
-            ->add('file', 'file_file', ['label' =>  trans('partymeister-competitions::backend/entries.file'), 'model' => Entry::class]);
-
+            ->add('submit', 'submit', ['attr' => ['class' => 'btn btn-primary btn-block'], 'label' => trans('partymeister-competitions::backend/entries.save')]);
+        $rules = 'required';
+        if ($this->getModel() instanceof Entry) {
+        	$rules = '';
+		}
+        $this
+            ->add('file', 'file_file', ['label' =>  trans('partymeister-competitions::backend/entries.file'), 'model' => Entry::class, 'rules' => $rules]);
 
         if (isset($data['competition'])) {
             if ($data['competition']->competition_type->has_screenshot) {
                 for($i=1; $i<=$data['competition']->competition_type->number_of_work_stages; $i++) {
-                    $this->add('work_stage_'.$i, 'file_image', ['label' =>  trans('partymeister-competitions::backend/entries.work_stage').' '.$i, 'model' => Entry::class]);
+                    $this->add('work_stage_'.$i, 'file_image', ['label' =>  trans('partymeister-competitions::backend/entries.work_stage').' '.$i, 'model' => Entry::class, 'rules' => $rules]);
                 }
             }
             if ($data['competition']->competition_type->has_screenshot) {
@@ -58,21 +63,21 @@ class EntryForm extends Form
             if ($data['competition']->competition_type->has_video) {
                 $this->add('video', 'file_video', ['label' =>  trans('partymeister-competitions::backend/entries.video'), 'model' => Entry::class]);
             }
-            if ($data['competition']->competition_type->has_audio) {
-                $this->add('audio', 'file_audio', ['label' =>  trans('partymeister-competitions::backend/entries.audio'), 'model' => Entry::class]);
-            }
-            if ($data['competition']->competition_type->has_running_time) {
-                $this->add('running_time', 'text', ['label' => trans('partymeister-competitions::backend/entries.running_time')]);
-            }
+//            if ($data['competition']->competition_type->has_audio) {
+//                $this->add('audio', 'file_audio', ['label' =>  trans('partymeister-competitions::backend/entries.audio'), 'model' => Entry::class]);
+//            }
+//            if ($data['competition']->competition_type->has_running_time) {
+//                $this->add('running_time', 'text', ['label' => trans('partymeister-competitions::backend/entries.running_time')]);
+//            }
 
             if ($data['competition']->competition_type->has_composer) {
-                $this->add('composer_name', 'text', ['label' => trans('partymeister-competitions::backend/entries.name')])
-                    ->add('composer_email', 'text', ['label' => trans('partymeister-competitions::backend/entries.email')])
-                    ->add('composer_phone', 'text', ['label' => trans('partymeister-competitions::backend/entries.phone')])
-                    ->add('composer_address', 'text', ['label' => trans('partymeister-competitions::backend/entries.address')])
-                    ->add('composer_zip', 'text', ['label' => trans('partymeister-competitions::backend/entries.zip')])
-                    ->add('composer_city', 'text', ['label' => trans('partymeister-competitions::backend/entries.city')])
-                    ->add('composer_country_iso_3166_1', 'select', ['label' => trans('partymeister-competitions::backend/entries.country'), 'choices' => \Symfony\Component\Intl\Intl::getRegionBundle()->getCountryNames()]);
+                $this->add('composer_name', 'text', ['label' => trans('partymeister-competitions::backend/entries.name'), 'rules' =>  'required'])
+                    ->add('composer_email', 'email', ['label' => trans('partymeister-competitions::backend/entries.email'), 'rules' =>  ['required']])
+                    ->add('composer_phone', 'text', ['label' => trans('partymeister-competitions::backend/entries.phone'), 'rules' =>  'required'])
+                    ->add('composer_address', 'text', ['label' => trans('partymeister-competitions::backend/entries.address'), 'rules' =>  'required'])
+                    ->add('composer_zip', 'text', ['label' => trans('partymeister-competitions::backend/entries.zip'), 'rules' =>  'required'])
+                    ->add('composer_city', 'text', ['label' => trans('partymeister-competitions::backend/entries.city'), 'rules' =>  'required'])
+                    ->add('composer_country_iso_3166_1', 'select', ['label' => trans('partymeister-competitions::backend/entries.country'), 'default_value' => 'DE', 'choices' => \Symfony\Component\Intl\Intl::getRegionBundle()->getCountryNames()]);
             }
         }
     }

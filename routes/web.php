@@ -21,6 +21,8 @@ Route::group([
         'web',
     ]
 ], function () {
+	Route::get('visitors', 'VisitorsController@index')->name('visitors');
+	Route::get('timetable', 'TimetableController@index')->name('timetable');
     Route::get('home', 'FrontendController@index')->name('home');
     Route::get('items', 'ItemsController@index')->name('items');
     Route::get('votes', 'VotesController@index')->name('votes.index');

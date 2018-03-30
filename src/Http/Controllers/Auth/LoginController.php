@@ -76,8 +76,24 @@ class LoginController extends Controller
         // user surpasses their maximum number of attempts they will get locked out.
         $this->incrementLoginAttempts($request);
 
-        return $this->sendFailedLoginResponse($request);
+        return response($this->sendFailedLoginResponse($request));
     }
+
+	/**
+	 * Send the response after the user was authenticated.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return \Illuminate\Http\Response
+	 */
+	protected function sendLoginResponse(Request $request)
+	{
+		$request->session()->regenerate();
+
+		$this->clearLoginAttempts($request);
+
+		return $this->authenticated($request, $this->guard('visitor')->user())
+			?: redirect('home');
+	}
 
     /**
      * Attempt to log the user into the application.

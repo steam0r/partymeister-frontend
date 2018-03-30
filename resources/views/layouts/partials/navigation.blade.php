@@ -1,21 +1,12 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-    <a class="navbar-brand" href="#">Revision 2018</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="{{route('frontend.home')}}">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Releases</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{route('frontend.items')}}">Stuff for sale</a>
-            </li>
-        </ul>
+<nav class="site-header sticky-top py-1">
+    <div class="container d-flex flex-column flex-md-row justify-content-between">
+        <a class="py-2" href="#">
+            REVISION 2018 Party Network
+        </a>
+        <a class="py-2 d-none d-md-inline-block @if(isset($navHighlight) && $navHighlight == 'home') active @endif" href="{{route('frontend.home')}}">Home</a>
+        <a class="py-2 d-none d-md-inline-block @if(isset($navHighlight) && $navHighlight == 'visitors') active @endif" href="{{route('frontend.visitors')}}">Who's here?</a>
+        <a class="py-2 d-none d-md-inline-block @if(isset($navHighlight) && $navHighlight == 'timetable') active @endif" href="{{route('frontend.timetable')}}">Timetable</a>
+        {{--<a class="py-2 d-none d-md-inline-block @if(isset($navHighlight) && $navHighlight == 'releases') active @endif" href="#">Releases</a>--}}
+        <a class="py-2 d-none d-md-inline-block @if(isset($navHighlight) && $navHighlight == 'items') active @endif" href="{{route('frontend.items')}}">Infodesk</a>
     </div>
 </nav>

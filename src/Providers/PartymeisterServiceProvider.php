@@ -65,13 +65,13 @@ class PartymeisterServiceProvider extends ServiceProvider
     }
 
 
-    public function routes()
-    {
-        if ( ! $this->app->routesAreCached()) {
-            require __DIR__ . '/../../routes/web.php';
-            //require __DIR__ . '/../../routes/api.php';
-        }
-    }
+	public function routes()
+	{
+		if ( ! $this->app->routesAreCached()) {
+			require __DIR__ . '/../../routes/web.php';
+			require __DIR__ . '/../../routes/api.php';
+		}
+	}
 
 
     public function translations()
