@@ -12,11 +12,19 @@
             Voting deadline is over!
         </div>
     @endif
-    @if (is_null($competition))
+    @if ($liveVoting)
+        <div class="alert alert-success">
+            <a style="color: #fc4981" href="{{route('frontend.voting.live')}}">
+            Live voting for the {{$liveVotingCompetition}} is active now!
+                <strong>Go vote!</strong></a>
+        </div>
+    @endif
+    @if (is_null($competition) && $liveVoting == false)
         <div class="alert alert-warning">
             There are no entries to vote for yet!
         </div>
-    @else
+    @endif
+    @if (!is_null($competition))
         <form id="save-votes" action="{{ route('frontend.votes.store')}}?competition_id={{$competition->id}}"
               method="post">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">

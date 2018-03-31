@@ -23,16 +23,16 @@
                     <h5 class="card-title">{{$entry->title}} by {{$entry->author}}</h5>
                     <h6>{{$entry->competition->name}}</h6>
                     <p class="card-text">{{$entry->description}}</p>
-                    <div class="btn-group">
+                    <div class="btn-group d-flex justify-content-center">
                         @if ($entry->competition->upload_enabled || $entry->upload_enabled)
-                            <a href="{{route('frontend.entries.edit', ['entry' => $entry])}}" class="btn btn-primary">Edit</a>
+                            <a href="{{route('frontend.entries.edit', ['entry' => $entry])}}" class="btn btn-sm btn-primary">Edit</a>
                         @endif
                         @if ($entry->competition->competition_type->has_screenshot)
-                            <a href="{{route('frontend.entries.screenshot.edit', ['entry' => $entry])}}" class="btn btn-primary">Update screenshot</a>
+                            <a href="{{route('frontend.entries.screenshot.edit', ['entry' => $entry])}}" class="btn btn-sm btn-primary">Update screenshot</a>
                         @endif
-                            <a href="{{route('frontend.entries.show', ['entry' => $entry])}}" class="btn btn-primary">Show</a>
-                        {{--<a href="#" class="btn btn-primary">Comment</a>--}}
+                            <a href="{{route('frontend.entries.show', ['entry' => $entry])}}" class="btn btn-sm btn-primary">Show</a>
                     </div>
+                    <a href="{{route('frontend.comments.index', ['entry' => $entry])}}" class="mt-3 btn btn-sm btn-block @if ($entry->new_comments > 0)btn-secondary @else btn-primary @endif">Messages @if ($entry->new_comments > 0) ({{$entry->new_comments}} NEW) @endif</a>
                 </div>
             </div>
         </div>

@@ -7,4 +7,8 @@
     <p>
         Sit down, unpack, have a beer, code, Code, CODE!
     </p>
+    <div class="alert alert-warning">
+        Small disclaimer. The party system is currently being rewritten and is missing some features - but we'll get
+        there. Promise!
+    </div>
 @endsection

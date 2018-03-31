@@ -19,6 +19,13 @@
 @endif
 @if (isset($visitor) && !is_null($visitor))
     <h2>Hello {{$visitor->name}}</h2>
+    @if ($visitor->new_comments > 0)
+        <div class="alert alert-warning">
+            <a href="{{route('frontend.entries.index')}}">
+                You have {{$visitor->new_comments}} new message(s) for your entries!
+            </a>
+        </div>
+    @endif
     <form id="logout" action="{{ url('/visitor/logout') }}" method="POST" class="form-inline">
     <ul class="nav flex-column nav-pills">
         <li class="nav-item">

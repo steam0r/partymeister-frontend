@@ -1,6 +1,6 @@
 <nav class="site-header sticky-top py-1">
     <div class="container d-flex flex-column flex-md-row justify-content-between">
-        <a class="py-2" href="#">
+        <a class="py-2" href="{{route('frontend.home')}}">
             REVISION 2018 Party Network
         </a>
         <a class="py-2 d-none d-md-inline-block @if(isset($navHighlight) && $navHighlight == 'home') active @endif" href="{{route('frontend.home')}}">Home</a>

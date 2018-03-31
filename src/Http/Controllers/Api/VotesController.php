@@ -45,7 +45,7 @@ class VotesController extends Controller {
 			]);
 		}
 
-		if ($competition->voting_enabled == FALSE)
+		if ($competition->voting_enabled == FALSE && !$request->get('live', false))
 		{
 			return response()->json([
 				'error'   => TRUE,
@@ -85,6 +85,7 @@ class VotesController extends Controller {
 
 		// Create new vote item if this one doesn't exist yet
 		$vote = $visitor->votes()->where('vote_category_id', $request->get('vote_category_id'))->where('entry_id', $request->get('entry_id'))->first();
+
 		if (is_null($vote))
 		{
 			$vote = new Vote();
@@ -95,14 +96,14 @@ class VotesController extends Controller {
 		}
 		$vote->points = $points;
 		$vote->vote_category_id = $request->get('vote_category_id');
-		$vote->comment = $request->get('comment');
+		$vote->comment = $request->get('comment', '');
 
-		if ($request->get('special_vote'))
+		if ($request->get('special_vote', null) !== null)
 		{
 			$vote->special_vote = $request->get('special_vote');
 		}
 
-		$vote->save();
+        $vote->save();
 
 		return response()->json([
 			'success' => TRUE,

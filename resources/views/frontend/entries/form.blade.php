@@ -73,17 +73,17 @@
             @if ($form->has('work_stage_1'))
                 <div class="row">
 
-                @php
-                    $i = 1;
-                @endphp
-                @while ($form->has('work_stage_'.$i))
-                    <div class="col-md-6">
-                        {!! form_row($form->{'work_stage_'.$i}) !!}
-                    </div>
                     @php
-                        $i++;
+                        $i = 1;
                     @endphp
-                @endwhile
+                    @while ($form->has('work_stage_'.$i))
+                        <div class="col-md-6">
+                            {!! form_row($form->{'work_stage_'.$i}) !!}
+                        </div>
+                        @php
+                            $i++;
+                        @endphp
+                    @endwhile
                 </div>
             @endif
 
@@ -109,7 +109,10 @@
     @if ($form->has('composer_name'))
         <div class="@boxWrapper box-primary">
             <div class="@boxHeader with-border">
-                <h3 class="box-title">{{ trans('partymeister-competitions::backend/entries.composer_info') }}</h3>
+                <h3 class="box-title">
+                    <button type="button" class="btn btn-sm btn-success float-right copy-data">Copy author data</button>
+                    {{ trans('partymeister-competitions::backend/entries.composer_info') }}
+                </h3>
             </div>
             <div class="@boxBody">
                 {!! form_row($form->composer_name) !!}
@@ -138,5 +141,22 @@
             $(this).closest('form').submit();
         });
         $('#reload_on_change').val('');
+
+        $('.copy-data').on('click', function (e) {
+            e.preventDefault();
+            $('input#composer_name').val($('input#author_name').val());
+            $('input#composer_email').val($('input#author_email').val());
+            $('input#composer_phone').val($('input#author_phone').val());
+            $('input#composer_address').val($('input#author_address').val());
+            $('input#composer_zip').val($('input#author_zip').val());
+            $('input#composer_city').val($('input#author_city').val());
+            $('input#composer_country_iso_3166_1').val($('input#author_country_iso_3166_1').val());
+        });
+
+        $("input").keypress(function (e) {
+            if (e.which == 13) {
+                e.preventDefault();
+            }
+        });
     </script>
 @append

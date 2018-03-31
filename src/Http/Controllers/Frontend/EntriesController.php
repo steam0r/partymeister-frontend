@@ -11,6 +11,7 @@ use Partymeister\Competitions\Services\EntryService;
 use Partymeister\Frontend\Forms\Frontend\EntryForm;
 
 use Kris\LaravelFormBuilder\FormBuilderTrait;
+use Partymeister\Slides\Models\SlideTemplate;
 
 class EntriesController extends Controller
 {
@@ -52,8 +53,8 @@ class EntriesController extends Controller
     {
         $visitor = Auth::guard('visitor')->user();
         $form = $this->form(EntryForm::class, [
-            'method'  => 'POST',
-            'route'   => 'frontend.entries.store',
+            'method' => 'POST',
+            'route' => 'frontend.entries.store',
             'enctype' => 'multipart/form-data',
 //			'model' => ['author_country_iso_3166_1' => 'DE', 'composer_country_iso_3166_1' => 'DE']
         ]);
@@ -74,10 +75,10 @@ class EntriesController extends Controller
         $form = $this->form(EntryForm::class);
 
         // It will automatically use current request, get the rules, and do the validation
-        if ((int) $request->get('reload_on_change') == 1) {
+        if ((int)$request->get('reload_on_change') == 1) {
             return redirect()->back()->withInput();
         }
-        if ( ! $form->isValid()) {
+        if (!$form->isValid()) {
             return redirect()->back()->withErrors($form->getErrors())->withInput();
         }
 
@@ -98,11 +99,33 @@ class EntriesController extends Controller
      */
     public function show(Entry $record)
     {
-		$visitor = Auth::guard('visitor')->user();
+        $visitor = Auth::guard('visitor')->user();
         if ($visitor->id != $record->visitor_id) {
-        	return redirect('home');
-		}
-		return view('partymeister-frontend::frontend.entries.show', compact('form', 'visitor', 'record'));
+            return redirect('home');
+        }
+
+        $data = fractal($record,
+            \Partymeister\Competitions\Transformers\EntryTransformer::class)->toArray();
+
+        $entry = $data['data'];
+
+
+        $entry['competition_name'] = strtoupper($entry['competition_name']);
+        if ($entry['filesize_bytes'] == 0) {
+            $entry['filesize_human'] = ' ';
+        }
+        if ($entry['description'] == '') {
+            $entry['description'] = ' ';
+        }
+        $entry['description'] = nl2br($entry['description']);
+        $entry['sort_position_prefixed'] = rand(10, 99);
+        $entry['previous_sort_position'] = ' ';
+        $entry['previous_author'] = ' ';
+        $entry['previous_title'] = ' ';
+
+
+        $competitionTemplate = SlideTemplate::where('template_for', 'competition')->first();
+        return view('partymeister-frontend::frontend.entries.show', compact('form', 'visitor', 'record', 'competitionTemplate', 'entry'));
     }
 
 
@@ -115,15 +138,15 @@ class EntriesController extends Controller
      */
     public function edit(Entry $record)
     {
-    	if (!$record->competition->upload_enabled && !$record->upload_enabled) {
-    		return redirect('entries');
-		}
+        if (!$record->competition->upload_enabled && !$record->upload_enabled) {
+            return redirect('entries');
+        }
         $visitor = Auth::guard('visitor')->user();
         $form = $this->form(EntryForm::class, [
-            'method'  => 'PATCH',
-            'url'     => route('frontend.entries.update', [ $record->id ]),
+            'method' => 'PATCH',
+            'url' => route('frontend.entries.update', [$record->id]),
             'enctype' => 'multipart/form-data',
-            'model'   => $record
+            'model' => $record
         ]);
 
         return view('partymeister-frontend::frontend.entries.edit', compact('form', 'visitor', 'record'));
@@ -134,24 +157,31 @@ class EntriesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  int                      $id
+     * @param  int $id
      *
      * @return \Illuminate\Http\Response
      */
     public function update(EntryRequest $request, Entry $record)
     {
-		if (!$record->competition->upload_enabled && !$record->upload_enabled) {
-			return redirect('entries');
-		}
+        if (!$record->competition->upload_enabled && !$record->upload_enabled) {
+            return redirect('entries');
+        }
         $form = $this->form(EntryForm::class);
 
+        $form->getField('file')->setOption('rules', '');
+//        if ($record->competition->competition_type->number_of_work_stages > 0) {
+//            for ($i = 1; $i <= $record->competition->competition_type->number_of_work_stages; $i++) {
+////                $form->getField('work_stage_' . $i)->setOption('rules', '');
+//            }
+//        }
+
         // It will automatically use current request, get the rules, and do the validation
-        if ((int) $request->get('reload_on_change') == 1) {
+        if ((int)$request->get('reload_on_change') == 1) {
             return redirect()->back()->withInput();
         }
 
         // It will automatically use current request, get the rules, and do the validation
-        if ( ! $form->isValid()) {
+        if (!$form->isValid()) {
             return redirect()->back()->withErrors($form->getErrors())->withInput();
         }
 
