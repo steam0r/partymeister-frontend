@@ -306,8 +306,8 @@ class ProfileController extends Controller {
 		}
 		$vote->points = $points;
 		$vote->vote_category_id = $voteCategory->id;
-		$vote->comment = $request->get('comment');
-		$vote->special_vote = $request->get('favourite');
+		$vote->comment = $request->get('comment', '');
+		$vote->special_vote = $request->get('favourite', 0);
 
 		$vote->save();
 

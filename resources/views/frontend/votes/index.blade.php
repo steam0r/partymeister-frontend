@@ -40,6 +40,9 @@
                                          class="img-fluid">
                                 </a>
                             @endif
+                                @if($entry->getFirstMedia('audio'))
+                                    <audio controls src="{{$entry->getFirstMedia('audio')->getUrl()}}" style="width: 100%"></audio>
+                                @endif
                             <div class="card-body">
                                 <h5 class="card-title">{{$entry->title}} by {{$entry->author}}</h5>
                                 <h6>{{$entry->competition->name}}</h6>
@@ -82,10 +85,10 @@
 @section('sidebar')
     @if (count($allCompetitions) > 0)
         <h2 class="pt-5">Please choose a competition</h2>
-        <ul class="nav flex-column nav-pills">
+        <ul class="list-unstyled flex-column nav-pills">
             @foreach ($allCompetitions as $competition)
-                <li class="nav-item">
-                    <a class="nav-link" href="{{route('frontend.votes.index')}}?competition_id={{$competition->id}}">
+                <li>
+                    <a href="{{route('frontend.votes.index')}}?competition_id={{$competition->id}}">
                         {{$competition->name}}</a>
                 </li>
             @endforeach

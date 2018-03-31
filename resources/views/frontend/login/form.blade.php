@@ -27,26 +27,26 @@
         </div>
     @endif
     <form id="logout" action="{{ url('/visitor/logout') }}" method="POST" class="form-inline">
-    <ul class="nav flex-column nav-pills">
-        <li class="nav-item">
-            <a class="nav-link" href="{{route('frontend.entries.index')}}"><i class="fa fa-cloud-upload-alt"></i>
-                My entries</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{route('frontend.votes.index') }}"><i class="fa fa-trophy"></i>
+        <ul class="list-unstyled flex-column nav-pills">
+            <li>
+                <a href="{{route('frontend.entries.index')}}"><i class="fa fa-cloud-upload-alt"></i>
+                    My entries</a>
+            </li>
+            <li>
+                <a href="{{route('frontend.votes.index') }}"><i class="fa fa-trophy"></i>
 
-                Vote for the compos</a>
-        </li>
-        {{--<li class="nav-item">--}}
+                    Vote for the compos</a>
+            </li>
+            {{--<li class="nav-item">--}}
             {{--<a class="nav-link" href="#"><i class="fa fa-comment"></i>--}}
-                {{--Write a message</a>--}}
-        {{--</li>--}}
-        <li class="nav-item">
+            {{--Write a message</a>--}}
+            {{--</li>--}}
+            <li>
                 {{ csrf_field() }}
-                <a class="logout nav-link" href="#"><i
+                <a class="logout" href="#"><i
                             class="fa fa-lock"></i> {{ trans('motor-backend::backend/login.sign_out') }}</a>
-        </li>
-    </ul>
+            </li>
+        </ul>
     </form>
 @endif
 

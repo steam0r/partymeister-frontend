@@ -1,12 +1,27 @@
-<nav class="site-header sticky-top py-1">
-    <div class="container d-flex flex-column flex-md-row justify-content-between">
-        <a class="py-2" href="{{route('frontend.home')}}">
-            REVISION 2018 Party Network
-        </a>
-        <a class="py-2 d-none d-md-inline-block @if(isset($navHighlight) && $navHighlight == 'home') active @endif" href="{{route('frontend.home')}}">Home</a>
-        <a class="py-2 d-none d-md-inline-block @if(isset($navHighlight) && $navHighlight == 'visitors') active @endif" href="{{route('frontend.visitors')}}">Who's here?</a>
-        <a class="py-2 d-none d-md-inline-block @if(isset($navHighlight) && $navHighlight == 'timetable') active @endif" href="{{route('frontend.timetable')}}">Timetable</a>
-        {{--<a class="py-2 d-none d-md-inline-block @if(isset($navHighlight) && $navHighlight == 'releases') active @endif" href="#">Releases</a>--}}
-        <a class="py-2 d-none d-md-inline-block @if(isset($navHighlight) && $navHighlight == 'items') active @endif" href="{{route('frontend.items')}}">Infodesk</a>
-    </div>
-</nav>
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-item" href="#">Revision 2018</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item @if(isset($navHighlight) && $navHighlight == 'home') active @endif">
+                        <a class="nav-link" href="{{route('frontend.home')}}">Home</a>
+                    </li>
+                    <li class="nav-item @if(isset($navHighlight) && $navHighlight == 'visitors') active @endif">
+                        <a class="nav-link" href="{{route('frontend.visitors')}}">Who's here</a>
+                    </li>
+                    <li class="nav-item @if(isset($navHighlight) && $navHighlight == 'timetable') active @endif">
+                        <a class="nav-link" href="{{route('frontend.timetable')}}">Timetable</a>
+                    </li>
+                    <li class="nav-item @if(isset($navHighlight) && $navHighlight == 'items') active @endif">
+                        <a class="nav-link" href="{{route('frontend.items')}}">Infodesk</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
