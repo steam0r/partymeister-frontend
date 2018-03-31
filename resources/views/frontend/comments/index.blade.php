@@ -37,6 +37,7 @@
                 </p>
             @endif
             {!! form_row($form->message) !!}
+            {!! form_row($form->mark_as_read) !!}
         </div>
         <div class="@boxFooter">
             {!! form_row($form->submit) !!}
@@ -46,8 +47,8 @@
 @endsection
 @section('view_scripts')
     <script>
-        $(document).ready(function(){
-            $('.mark-as-read').on('click', function(e) {
+        $(document).ready(function () {
+            $('.mark-as-read').on('click', function (e) {
                 $('input#mark_as_read').val(1);
             });
         });

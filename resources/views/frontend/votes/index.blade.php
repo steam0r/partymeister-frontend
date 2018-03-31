@@ -86,10 +86,10 @@
     @if (count($allCompetitions) > 0)
         <h2 class="pt-5">Please choose a competition</h2>
         <ul class="list-unstyled flex-column nav-pills">
-            @foreach ($allCompetitions as $competition)
+            @foreach ($allCompetitions as $c)
                 <li>
-                    <a href="{{route('frontend.votes.index')}}?competition_id={{$competition->id}}">
-                        {{$competition->name}}</a>
+                    <a href="{{route('frontend.votes.index')}}?competition_id={{$c->id}}">
+                        {{$c->name}}</a>
                 </li>
             @endforeach
         </ul>

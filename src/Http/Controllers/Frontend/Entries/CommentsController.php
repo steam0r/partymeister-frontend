@@ -65,6 +65,8 @@ class CommentsController extends Controller
                 $comment->save();
             }
             return redirect('comments/'.$record->id);
+        } else {
+            $form->getField('message')->setOption('rules', ['required']);
         }
 
         if (!$form->isValid()) {
