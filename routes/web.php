@@ -24,7 +24,9 @@ Route::group([
 	Route::get('visitors', 'VisitorsController@index')->name('visitors');
 	Route::get('timetable', 'TimetableController@index')->name('timetable');
     Route::get('home', 'FrontendController@index')->name('home');
+    Route::get('photos', 'PhotowallController@index')->name('photowall');
     Route::get('items', 'ItemsController@index')->name('items');
+    Route::get('releases', 'ReleasesController@index')->name('releases.index');
     Route::get('votes', 'VotesController@index')->name('votes.index');
     Route::post('votes', 'VotesController@store')->name('votes.store');
     Route::get('comments/{entry}', 'Entries\CommentsController@index')->name('comments.index');

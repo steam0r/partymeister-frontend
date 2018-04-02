@@ -45,58 +45,63 @@ class VotesController extends Controller
     {
         $this->visitor = Auth::guard('visitor')->user();
 
-        $votingDeadlineOver = FALSE;
+        $votingDeadlineOver = false;
         if (strtotime(config('partymeister-competitions-voting.deadline')) < time()) {
-            $votingDeadlineOver = TRUE;
+            $votingDeadlineOver = true;
         }
 
         if ($request->get('competition_id') > 0) {
-            $competition = Competition::where('voting_enabled', TRUE)
-                ->where('id', $request->get('competition_id'))
-                ->orderBy('updated_at', 'ASC')
-                ->first();
+            $competition = Competition::where('voting_enabled', true)
+                                      ->where('id', $request->get('competition_id'))
+                                      ->orderBy('updated_at', 'ASC')
+                                      ->first();
         } else {
-            $competition = Competition::where('voting_enabled', TRUE)->orderBy('updated_at', 'ASC')->first();
+            $competition = Competition::where('voting_enabled', true)->orderBy('updated_at', 'ASC')->first();
         }
 
         $votes = [];
-        if (!is_null($competition)) {
+        if ( ! is_null($competition)) {
             foreach ($competition->vote_categories as $voteCategory) {
-                if (!isset($votes[$voteCategory->id])) {
+                if ( ! isset($votes[$voteCategory->id])) {
                     $votes[$voteCategory->id] = [];
                 }
             }
-            foreach (Auth::guard('visitor')->user()->votes()->where('competition_id', $competition->id)->get() as $vote) {
+            foreach (Auth::guard('visitor')
+                         ->user()
+                         ->votes()
+                         ->where('competition_id', $competition->id)
+                         ->get() as $vote) {
                 $votes[$vote->vote_category_id][$vote->entry_id] = [
-                    'points' => $vote->points,
-                    'comment' => $vote->comment,
+                    'points'       => $vote->points,
+                    'comment'      => $vote->comment,
                     'special_vote' => $vote->special_vote
                 ];
             }
         }
 
-        $allCompetitions = Competition::where('voting_enabled', TRUE)->orderBy('updated_at', 'ASC')->get();
+        $allCompetitions = Competition::where('voting_enabled', true)->orderBy('updated_at', 'ASC')->get();
 
         // Check if livevoting is active
-        $liveVoting = false;
+        $liveVoting            = false;
         $liveVotingCompetition = '';
-        $live = LiveVote::first();
-        if (!is_null($live)) {
-            if (!$live->competition->voting_enabled) {
-                $liveVoting = true;
+        $live                  = LiveVote::first();
+        if ( ! is_null($live)) {
+            if ( ! $live->competition->voting_enabled) {
+                $liveVoting            = true;
                 $liveVotingCompetition = $live->competition->name;
             }
         }
 
         return view('partymeister-frontend::frontend.votes.index', [
-            'visitor' => $this->visitor,
-            'entries' => $this->visitor->entries,
-            'competition' => $competition,
-            'allCompetitions' => $allCompetitions,
-            'votes' => $votes,
-            'votingDeadlineOver' => $votingDeadlineOver,
-            'liveVoting' => $liveVoting,
-            'liveVotingCompetition' => $liveVotingCompetition
+            'visitor'               => $this->visitor,
+            'entries'               => $this->visitor->entries,
+            'competition'           => $competition,
+            'allCompetitions'       => $allCompetitions,
+            'votes'                 => $votes,
+            'votingDeadlineOver'    => $votingDeadlineOver,
+            'liveVoting'            => $liveVoting,
+            'liveVotingCompetition' => $liveVotingCompetition,
+            'navHighlight'          => 'vote'
         ]);
     }
 
@@ -116,10 +121,10 @@ class VotesController extends Controller
                 foreach ($entries as $entryId => $points) {
 
                     $vote = $visitor->votes()
-                        ->where('competition_id', $competitionId)
-                        ->where('entry_id', $entryId)
-                        ->where('vote_category_id', $voteCategoryId)
-                        ->first();
+                                    ->where('competition_id', $competitionId)
+                                    ->where('entry_id', $entryId)
+                                    ->where('vote_category_id', $voteCategoryId)
+                                    ->first();
 
                     if (is_null($vote)) {
                         $vote = new Vote();
@@ -130,13 +135,13 @@ class VotesController extends Controller
                     }
 
                     $vote->vote_category_id = $voteCategoryId;
-                    $vote->competition_id = $competitionId;
-                    $vote->entry_id = $entryId;
-                    $vote->comment = array_get($request->all(),
+                    $vote->competition_id   = $competitionId;
+                    $vote->entry_id         = $entryId;
+                    $vote->comment          = array_get($request->all(),
                         'entry_comment.' . $competitionId . '.' . $entryId);
-                    $vote->points = $points;
-                    $vote->visitor_id = Auth::guard('visitor')->user()->id;
-                    $vote->ip_address = $request->ip();
+                    $vote->points           = $points;
+                    $vote->visitor_id       = Auth::guard('visitor')->user()->id;
+                    $vote->ip_address       = $request->ip();
                     $vote->save();
                 }
             }
@@ -144,7 +149,7 @@ class VotesController extends Controller
 
         flash()->success(trans('partymeister-competitions::backend/entries.created'));
 
-        if ($request->get('competition_id', FALSE)) {
+        if ($request->get('competition_id', false)) {
             return redirect('votes?competition_id=' . $request->get('competition_id'));
         } else {
             return redirect('votes');

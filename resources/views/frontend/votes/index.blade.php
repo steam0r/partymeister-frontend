@@ -34,11 +34,13 @@
                     <div class="col-md-6">
                         <div class="card mb-3 @if(isset($votes[1][$entry->id]) && $votes[1][$entry->id]['special_vote'] == 1) special-vote-highlight @endif" data-entry-id="{{$entry->id}}">
                             @if($entry->getFirstMedia('screenshot'))
-                                <a data-caption="{{$entry->title}} by {{$entry->author}}" data-fancybox="gallery"
-                                   href="{{$entry->getFirstMedia('screenshot')->getUrl('preview')}}">
-                                    <img src="{{$entry->getFirstMedia('screenshot')->getUrl('preview')}}"
-                                         class="img-fluid">
-                                </a>
+                                <div class="image-wrapper">
+                                    <a data-caption="{{$entry->title}} by {{$entry->author}}" data-fancybox="gallery"
+                                       href="{{$entry->getFirstMedia('screenshot')->getUrl('preview')}}">
+                                        <img src="{{$entry->getFirstMedia('screenshot')->getUrl('preview')}}"
+                                             class="img-fluid">
+                                    </a>
+                                </div>
                             @endif
                                 @if($entry->getFirstMedia('audio'))
                                     <audio controls src="{{$entry->getFirstMedia('audio')->getUrl()}}" style="width: 100%"></audio>
@@ -46,8 +48,21 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{$entry->title}} by {{$entry->author}}</h5>
                                 <h6>{{$entry->competition->name}}</h6>
-                                {{--<p class="card-text">{{$entry->description}}</p>--}}
-                                {{--<span style="font-size: 25px;">&#x1f4a9;</span>--}}
+                                @if ($entry->options->count() > 0 || $entry->custom_option != '')
+                                    <h6 class="mt-2">Options</h6>
+                                    <ul class="list-unsorted">
+                                        @foreach ($entry->options as $option)
+                                            <li>{{$option->name}}</li>
+                                        @endforeach
+                                        @if($entry->custom_option != '')
+                                            <li>{{$entry->custom_option}}</li>
+                                        @endif
+                                    </ul>
+                                @endif
+                                @if ($entry->description != '')
+                                    <h6>Description</h6>
+                                    <p class="mt-2">{!! nl2br($entry->description)!!}</p>
+                                @endif
                                 @foreach($competition->vote_categories as $voteCategory)
                                     <div class="points" data-entry-id="{{$entry->id}}"
                                          data-vote-category-id="{{$voteCategory->id}}"></div>
@@ -73,6 +88,14 @@
                                         </div>
                                     @endif
                                 @endforeach
+                                @if ($entry->download != null)
+                                    <div class="clearfix"></div>
+                                <a href="{{$entry->download->getUrl()}}" style="text-decoration: none !important">
+                                    <button type="button" class="btn btn-sm btn-block btn-success mt-3">
+                                        Download
+                                    </button>
+                                </a>
+                                @endif
                             </div>
                         </div>
                     </div>

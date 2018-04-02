@@ -20,6 +20,15 @@
                     <li class="nav-item @if(isset($navHighlight) && $navHighlight == 'items') active @endif">
                         <a class="nav-link" href="{{route('frontend.items')}}">Infodesk</a>
                     </li>
+                    <li class="nav-item @if(isset($navHighlight) && $navHighlight == 'vote') active @endif">
+                        <a class="nav-link" href="{{route('frontend.votes.index')}}">Vote</a>
+                    </li>
+                    <li class="nav-item @if(isset($navHighlight) && $navHighlight == 'releases') active @endif">
+                        <a class="nav-link" href="{{route('frontend.releases.index')}}">Releases</a>
+                    </li>
+                    <li class="nav-item @if(isset($navHighlight) && $navHighlight == 'photowall') active @endif">
+                        <a class="nav-link" href="{{route('frontend.photowall')}}">Photowall</a>
+                    </li>
                 </ul>
             </div>
         </div>

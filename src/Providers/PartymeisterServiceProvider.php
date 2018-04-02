@@ -5,6 +5,7 @@ namespace Partymeister\Frontend\Providers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Partymeister\Frontend\Console\Commands\PartymeisterFrontendCachePhotowallCommand;
 use Partymeister\Slides\Console\Commands\PartymeisterSlidesGenerateCompetitionCommand;
 use Partymeister\Slides\Console\Commands\PartymeisterSlidesGenerateEntryCommand;
 
@@ -51,6 +52,11 @@ class PartymeisterServiceProvider extends ServiceProvider
 
     public function registerCommands()
     {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                PartymeisterFrontendCachePhotowallCommand::class,
+            ]);
+        }
     }
 
 
