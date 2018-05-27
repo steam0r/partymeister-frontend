@@ -1,7 +1,4 @@
 @extends('partymeister-frontend::layouts.frontend')
-@section('view_styles')
-    <link href="/css/jquery.raty.css" rel="stylesheet" type="text/css"/>
-@append
 
 @section('main_content')
     <h1>
@@ -120,7 +117,6 @@
 @endsection
 @if (!is_null($competition))
 @section('view_scripts')
-    <script src="js/jquery.raty.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('.special-vote-on').on('click', function (e) {
@@ -170,18 +166,9 @@
 
                 axios.post('{{route('ajax.votes.submit', ['api_token' => $visitor->api_token])}}', data).then(function (response) {
                     if (response.data.success) {
-                        $.toast(
-                            {
-                                text : response.data.message,
-                                position: 'top-right'
-                            });
+                        toastr.success(response.data.message);
                     } else if (response.data.error) {
-                        $.toast(
-                            {
-                                text : response.data.message,
-                                position: 'top-right',
-                                bgColor: 'red',
-                            });
+                        toastr.error(response.data.message);
                     }
                 });
             };

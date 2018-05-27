@@ -1,6 +1,6 @@
 <html>
 <head>
-    <link rel="stylesheet" href="{{asset('css/mini-dark.min.css')}}">
+    <link rel="stylesheet" href="{{mix('css/partymeister-livevoting.css')}}">
     <style type="text/css">
         .special {
             background-color: #fc4981;
@@ -17,7 +17,6 @@
 <div id="live-voting">
     <h2>Live voting</h2>
     <h3>@{{ competition }}</h3>
-    {{--<div v-for="let e of entries"></div>--}}
 
     <div class="card" v-for="entry in entries">
         <div class="section" v-bind:class="{ special: (entry.vote.data[0] && entry.vote.data[0].special_vote)}">
@@ -45,10 +44,12 @@
             <div style="text-align: center">
                 <input name="comment" placeholder="Comment" v-model="entry.comment" style="text-align: center">
                 <button @click="updateVote(entry)">Send</button>
-                <button v-if="!(entry.vote.data[0] && entry.vote.data[0].special_vote)" @click="markSpecial(entry, true)">&hearts; My party
+                <button v-if="!(entry.vote.data[0] && entry.vote.data[0].special_vote)"
+                        @click="markSpecial(entry, true)">&hearts; My party
                     favourite &hearts;
                 </button>
-                <button v-if="entry.vote.data[0] && entry.vote.data[0].special_vote" @click="markSpecial(entry, false)">&#x2639; Not my favourite
+                <button v-if="entry.vote.data[0] && entry.vote.data[0].special_vote" @click="markSpecial(entry, false)">
+                    &#x2639; Not my favourite
                     anymore &#x2639;
                 </button>
             </div>
@@ -58,8 +59,7 @@
     </div>
 </div>
 
-<script type="text/javascript" src="{{asset('js/vue.min.js')}}"></script>
-<script type="text/javascript" src="{{asset('js/axios.min.js')}}"></script>
+<script type="text/javascript" src="{{mix('js/partymeister-livevoting.js')}}"></script>
 <script>
     var liveVoting = new Vue({
         el: '#live-voting',

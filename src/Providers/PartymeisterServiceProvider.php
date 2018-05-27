@@ -40,13 +40,13 @@ class PartymeisterServiceProvider extends ServiceProvider
 
     public function publishResourceAssets()
     {
-        //$assets = [
-        //    __DIR__ . '/../../resources/assets/images' => public_path('images'),
-        //    __DIR__ . '/../../resources/assets/css' => resource_path('assets/css'),
-        //    __DIR__ . '/../../resources/assets/js'  => resource_path('assets/js'),
-        //];
-        //
-        //$this->publishes($assets, 'partymeister-frontend-install');
+        $assets = [
+            __DIR__ . '/../../resources/assets/sass'   => resource_path('assets/sass'),
+            __DIR__ . '/../../resources/assets/npm'    => resource_path('assets/npm'),
+            __DIR__ . '/../../resources/assets/js'     => resource_path('assets/js'),
+        ];
+
+        $this->publishes($assets, 'partymeister-frontend-install-resources');
     }
 
 
