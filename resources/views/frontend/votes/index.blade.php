@@ -62,16 +62,18 @@
                                 @endif
                                 @foreach($competition->vote_categories as $voteCategory)
                                     <div class="points" data-entry-id="{{$entry->id}}"
-                                         data-vote-category-id="{{$voteCategory->id}}"></div>
+                                         data-vote-category-id="{{$voteCategory->id}}" data-points="{{$voteCategory->points}}"></div>
                                     <input type="hidden" data-entry-id="{{$entry->id}}"
                                            data-vote-category-id="{{$voteCategory->id}}"
                                            name="entry[{{$competition->id}}][{{$voteCategory->id}}][{{$entry->id}}]"
                                            value="{{ (isset($votes[$voteCategory->id][$entry->id]) ? $votes[$voteCategory->id][$entry->id]['points'] : 0)}}">
-                                    @if ($loop->last)
+                                    @if ($loop->last && $voteCategory->has_comment)
                                         <input @if ($votingDeadlineOver)disabled @endif type="text" class="entry-comment" placeholder="Comment"
                                                name="entry_comment[{{$competition->id}}][{{$entry->id}}]"
                                                value="{{ (isset($votes[$voteCategory->id][$entry->id]) ? $votes[$voteCategory->id][$entry->id]['comment'] : '')}}">
                                         <button class="btn btn-sm btn-success save-comment float-right">Send</button>
+                                    @endif
+                                    @if ($loop->last && $voteCategory->has_special_vote)
 
                                         <div>
                                             <button class="btn btn-sm btn-success btn-block special-vote-on @if(isset($votes[$voteCategory->id][$entry->id]) && $votes[$voteCategory->id][$entry->id]['special_vote'] == 1) d-none @endif">
@@ -119,6 +121,7 @@
 @section('view_scripts')
     <script type="text/javascript">
         $(document).ready(function () {
+
             $('.special-vote-on').on('click', function (e) {
                 e.preventDefault();
 
@@ -184,6 +187,7 @@
                 $(element).raty({
                     starType: 'i',
                     cancel: true,
+                    number: $(element).data('points'),
                     @if ($votingDeadlineOver)
                     readOnly: true,
                     @endif

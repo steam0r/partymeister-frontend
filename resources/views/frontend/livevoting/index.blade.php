@@ -19,39 +19,37 @@
     <h3>@{{ competition }}</h3>
 
     <div class="card" v-for="entry in entries">
-        <div class="section" v-bind:class="{ special: (entry.vote.data[0] && entry.vote.data[0].special_vote)}">
+        <div class="section" v-bind:class="{ special: (entry.vote.data[0] && entry.vote.data[0].special_vote && entry.vote_category_has_special_vote)}">
             <h4><strong># @{{ entry.entry_number }}</strong> @{{ entry.title }} by @{{ entry.author }}</h4>
             <div class="button-group">
                 <button type="button" data-value="0" @click="updateVote(entry, 0)"
                         v-bind:class="{ active: (entry.vote.data[0] && entry.vote.data[0].points) == 0}">-
                 </button>
-                <button type="button" data-value="1" @click="updateVote(entry, 1)"
-                        v-bind:class="{ active: (entry.vote.data[0] && entry.vote.data[0].points) == 1}">1
+                <button v-if="entry.vote_category_has_negative" type="button" data-value="-1" @click="updateVote(entry, -1)"
+                        v-bind:class="{ active: (entry.vote.data[0] && entry.vote.data[0].points) == -1}">-1
                 </button>
-                <button type="button" data-value="2" @click="updateVote(entry, 2)"
-                        v-bind:class="{ active: (entry.vote.data[0] && entry.vote.data[0].points) == 2}">2
-                </button>
-                <button type="button" data-value="3" @click="updateVote(entry, 3)"
-                        v-bind:class="{ active: (entry.vote.data[0] && entry.vote.data[0].points) == 3}">3
-                </button>
-                <button type="button" data-value="4" @click="updateVote(entry, 4)"
-                        v-bind:class="{ active: (entry.vote.data[0] && entry.vote.data[0].points) == 4}">4
-                </button>
-                <button type="button" data-value="5" @click="updateVote(entry, 5)"
-                        v-bind:class="{ active: (entry.vote.data[0] && entry.vote.data[0].points) == 5}">5
-                </button>
+                <template v-for="points in entry.vote_category_points">
+                    <button type="button" v-bind:data-value="points" @click="updateVote(entry, points)"
+                            v-bind:class="{ active: (entry.vote.data[0] && entry.vote.data[0].points) == points}">@{{points}}
+                    </button>
+                </template>
             </div>
             <div style="text-align: center">
-                <input name="comment" placeholder="Comment" v-model="entry.comment" style="text-align: center">
-                <button @click="updateVote(entry)">Send</button>
-                <button v-if="!(entry.vote.data[0] && entry.vote.data[0].special_vote)"
-                        @click="markSpecial(entry, true)">&hearts; My party
-                    favourite &hearts;
-                </button>
-                <button v-if="entry.vote.data[0] && entry.vote.data[0].special_vote" @click="markSpecial(entry, false)">
-                    &#x2639; Not my favourite
-                    anymore &#x2639;
-                </button>
+                <template v-if="entry.vote_category_has_comment">
+                    <input name="comment" placeholder="Comment" v-model="entry.comment" style="text-align: center">
+                    <button @click="updateVote(entry)">Send</button>
+                </template>
+
+                <template v-if="entry.vote_category_has_special_vote">
+                    <button v-if="!(entry.vote.data[0] && entry.vote.data[0].special_vote)"
+                            @click="markSpecial(entry, true)">&hearts; My party
+                        favourite &hearts;
+                    </button>
+                    <button v-if="entry.vote.data[0] && entry.vote.data[0].special_vote" @click="markSpecial(entry, false)">
+                        &#x2639; Not my favourite
+                        anymore &#x2639;
+                    </button>
+                </template>
             </div>
             <span class="toast secondary" v-if="success">Saved</span>
             <span class="toast secondary" v-if="error">Error</span>
@@ -120,7 +118,7 @@
                 var data = {
                     entry_id: entry.id,
                     competition_id: entry.competition_id,
-                    vote_category_id: 1,
+                    vote_category_id: entry.vote_category_id,
                     points: entry.vote.data[0].points,
                     comment: entry.comment,
                     live: true

@@ -69,9 +69,9 @@ class VotesController extends Controller {
 			]);
 		}
 		$points = $request->get('points');
-		if ($points > 5)
+		if ($points > $voteCategory->points)
 		{
-			$points = 5;
+			$points = $voteCategory->points;
 		}
 
 		if ($request->get('special_vote'))
