@@ -1,16 +1,6 @@
 <html>
 <head>
     <link rel="stylesheet" href="{{mix('css/partymeister-livevoting.css')}}">
-    <style type="text/css">
-        .special {
-            background-color: #fc4981;
-        }
-
-        .active, .active:focus {
-            background-color: #77e15d;
-            color: black;
-        }
-    </style>
 </head>
 <body>
 
@@ -21,17 +11,11 @@
     <div class="card" v-for="entry in entries">
         <div class="section" v-bind:class="{ special: (entry.vote.data[0] && entry.vote.data[0].special_vote && entry.vote_category_has_special_vote)}">
             <h4><strong># @{{ entry.entry_number }}</strong> @{{ entry.title }} by @{{ entry.author }}</h4>
-            <div class="button-group">
-                <button type="button" data-value="0" @click="updateVote(entry, 0)"
-                        v-bind:class="{ active: (entry.vote.data[0] && entry.vote.data[0].points) == 0}">-
-                </button>
-                <button v-if="entry.vote_category_has_negative" type="button" data-value="-1" @click="updateVote(entry, -1)"
-                        v-bind:class="{ active: (entry.vote.data[0] && entry.vote.data[0].points) == -1}">-1
-                </button>
+            <div style="text-align: center;">
+                <div data-value="0" @click="updateVote(entry, 0)" v-bind:class="{ 'partymeister-rating-wrapper': true, 'partymeister-rating-cancel-on': (entry.vote.data[0] && entry.vote.data[0].points) == 0, 'partymeister-rating-cancel-off': (entry.vote.data[0] && entry.vote.data[0].points) != 0}"></div>
+                <div data-value="-1" @click="updateVote(entry, -1)" v-bind:class="{ 'partymeister-rating-wrapper': true, 'partymeister-rating-negative-on': (entry.vote.data[0] && entry.vote.data[0].points) == -1, 'partymeister-rating-negative-off': (entry.vote.data[0] && entry.vote.data[0].points) != -1}"></div>
                 <template v-for="points in entry.vote_category_points">
-                    <button type="button" v-bind:data-value="points" @click="updateVote(entry, points)"
-                            v-bind:class="{ active: (entry.vote.data[0] && entry.vote.data[0].points) == points}">@{{points}}
-                    </button>
+                    <div v-bind:data-value="points" @click="updateVote(entry, points)" v-bind:class="{ 'partymeister-rating-wrapper': true, 'partymeister-rating-star-on': (entry.vote.data[0] && entry.vote.data[0].points) >= points, 'partymeister-rating-star-off': (entry.vote.data[0] && entry.vote.data[0].points) < points}"></div>
                 </template>
             </div>
             <div style="text-align: center">
