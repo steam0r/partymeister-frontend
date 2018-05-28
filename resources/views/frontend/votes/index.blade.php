@@ -62,11 +62,7 @@
                                 @endif
                                 @foreach($competition->vote_categories as $voteCategory)
                                     <div class="points" data-entry-id="{{$entry->id}}"
-                                         data-vote-category-id="{{$voteCategory->id}}" data-points="{{$voteCategory->points}}"></div>
-                                    <input type="hidden" data-entry-id="{{$entry->id}}"
-                                           data-vote-category-id="{{$voteCategory->id}}"
-                                           name="entry[{{$competition->id}}][{{$voteCategory->id}}][{{$entry->id}}]"
-                                           value="{{ (isset($votes[$voteCategory->id][$entry->id]) ? $votes[$voteCategory->id][$entry->id]['points'] : 0)}}">
+                                         data-vote-category-id="{{$voteCategory->id}}" data-negative="{{$voteCategory->has_negative}}" data-value="{{ (isset($votes[$voteCategory->id][$entry->id]) ? $votes[$voteCategory->id][$entry->id]['points'] : 0)}}" data-points="{{$voteCategory->points}}"></div>
                                     @if ($loop->last && $voteCategory->has_comment)
                                         <input @if ($votingDeadlineOver)disabled @endif type="text" class="entry-comment" placeholder="Comment"
                                                name="entry_comment[{{$competition->id}}][{{$entry->id}}]"
@@ -126,7 +122,7 @@
                 e.preventDefault();
 
                 var ratingElement = $(this).parent().parent().find('.points');
-                vote($(ratingElement).raty('score'), ratingElement, true);
+                vote($(ratingElement).data('value'), ratingElement, true);
 
                 $('.special-vote-off').each(function (index, element) {
                     if (!$(element).hasClass('d-none')) {
@@ -146,7 +142,7 @@
                 e.preventDefault();
 
                 var ratingElement = $(this).parent().parent().find('.points');
-                vote($(ratingElement).raty('score'), ratingElement, false);
+                vote($(ratingElement).data('value'), ratingElement, false);
 
                 $('.entries div .card').removeClass('special-vote-highlight');
                 $(this).addClass('d-none');
@@ -179,21 +175,20 @@
             $('.save-comment').on('click', function(e) {
                 e.preventDefault();
                 var ratingElement = $(this).parent().find('.points');
-                vote($(ratingElement).raty('score'), ratingElement);
+                vote($(ratingElement).data('value'), ratingElement);
             });
 
             $('.points').each(function (index, element) {
                 points = $(element).parent().find('input:hidden[data-vote-category-id="' + $(element).data('vote-category-id') + '"]').val();
-                $(element).raty({
-                    starType: 'i',
-                    cancel: true,
-                    number: $(element).data('points'),
+                $(element).partymeisterRating({
+                    negative: parseInt($(element).data('negative')),
+                    stars: $(element).data('points'),
                     @if ($votingDeadlineOver)
-                    readOnly: true,
+                    readonly: true,
                     @endif
-                    score: points,
-                    click: function (points) {
-                        vote(points, this);
+                    value: points,
+                    click: function (points, element) {
+                        vote(points, element);
                     }
                 });
             });
