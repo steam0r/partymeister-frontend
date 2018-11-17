@@ -12,8 +12,8 @@
     }
   ],
   "require": {
-    "partymeister/core": "0.2.*",
-    "partymeister/slides": "0.2.*"
+    "partymeister/core": "0.3.*",
+    "partymeister/slides": "0.3.*"
   },
   "autoload": {
     "psr-4": {
