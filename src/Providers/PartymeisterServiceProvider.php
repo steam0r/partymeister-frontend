@@ -29,6 +29,7 @@ class PartymeisterServiceProvider extends ServiceProvider
         $this->registerCommands();
         $this->migrations();
         $this->publishResourceAssets();
+        $this->components();
     }
 
 
@@ -38,12 +39,20 @@ class PartymeisterServiceProvider extends ServiceProvider
     }
 
 
+    public function components()
+    {
+        $config = $this->app['config']->get('motor-cms-page-components', []);
+        $this->app['config']->set('motor-cms-page-components',
+            array_replace_recursive(require __DIR__ . '/../../config/motor-cms-page-components.php', $config));
+    }
+
+
     public function publishResourceAssets()
     {
         $assets = [
-            __DIR__ . '/../../resources/assets/sass'   => resource_path('assets/sass'),
-            __DIR__ . '/../../resources/assets/npm'    => resource_path('assets/npm'),
-            __DIR__ . '/../../resources/assets/js'     => resource_path('assets/js'),
+            __DIR__ . '/../../resources/assets/sass' => resource_path('assets/sass'),
+            __DIR__ . '/../../resources/assets/npm'  => resource_path('assets/npm'),
+            __DIR__ . '/../../resources/assets/js'   => resource_path('assets/js'),
         ];
 
         $this->publishes($assets, 'partymeister-frontend-install-resources');
@@ -62,7 +71,7 @@ class PartymeisterServiceProvider extends ServiceProvider
 
     public function migrations()
     {
-        //$this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
     }
 
 
@@ -71,13 +80,13 @@ class PartymeisterServiceProvider extends ServiceProvider
     }
 
 
-	public function routes()
-	{
-		if ( ! $this->app->routesAreCached()) {
-			require __DIR__ . '/../../routes/web.php';
-			require __DIR__ . '/../../routes/api.php';
-		}
-	}
+    public function routes()
+    {
+        if ( ! $this->app->routesAreCached()) {
+            require __DIR__ . '/../../routes/web.php';
+            require __DIR__ . '/../../routes/api.php';
+        }
+    }
 
 
     public function translations()
@@ -102,6 +111,10 @@ class PartymeisterServiceProvider extends ServiceProvider
 
     public function routeModelBindings()
     {
+        Route::bind('component_schedule', function($id){
+            return \Partymeister\Frontend\Models\Component\ComponentSchedule::findOrFail($id);
+        });
+
     }
 
 
