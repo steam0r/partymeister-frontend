@@ -111,10 +111,6 @@ class PartymeisterServiceProvider extends ServiceProvider
 
     public function routeModelBindings()
     {
-        Route::bind('component_schedule', function($id){
-            return \Partymeister\Frontend\Models\Component\ComponentSchedule::findOrFail($id);
-        });
-
     }
 
 

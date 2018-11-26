@@ -48,19 +48,3 @@ Route::group([
 ], function () {
     Auth::routes();
 });
-
-Route::group([
-    'as'         => 'component.',
-    'prefix'     => 'component',
-    'namespace'  => 'Partymeister\Frontend\Http\Controllers\Component',
-    'middleware' => [
-        'web',
-        //'web_auth'
-    ]
-], function () {
-    Route::get('schedules', 'Partymeister\SchedulesController@create')->name('schedules.create');
-    Route::post('schedules', 'Partymeister\SchedulesController@store')->name('schedules.store');
-    Route::get('schedules/{component_schedule}', 'Partymeister\SchedulesController@edit')->name('schedules.edit');
-    Route::patch('schedules/{component_schedule}', 'Partymeister\SchedulesController@update')->name('schedules.update');
-    //Route::resource('schedules', 'Partymeister\SchedulesController', ['parameters' => ['schedule' => 'component_schedule']]);
-});
