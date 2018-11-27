@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "devDependencies": {
+    "flag-icon-css": "^3.2.1",
+    "mini.css": "^2.3.7",
+    "foundation-sites": "^6.5.1"
+  }
+}

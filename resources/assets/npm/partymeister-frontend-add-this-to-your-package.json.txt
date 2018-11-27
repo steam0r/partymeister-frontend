@@ -1,5 +1,0 @@
-devDependencies:
-----------------
-
-"flag-icon-css": "^3.2.1",
-"mini.css": "^2.3.7",
