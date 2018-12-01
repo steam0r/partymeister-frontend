@@ -13,6 +13,7 @@
   ],
   "require": {
     "partymeister/core": "0.3.*",
+    "motor/cms": "0.6.*",
     "partymeister/slides": "0.3.*"
   },
   "autoload": {

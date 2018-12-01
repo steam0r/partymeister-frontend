@@ -30,6 +30,7 @@ class PartymeisterServiceProvider extends ServiceProvider
         $this->migrations();
         $this->publishResourceAssets();
         $this->components();
+        $this->templates();
     }
 
 
@@ -39,11 +40,17 @@ class PartymeisterServiceProvider extends ServiceProvider
     }
 
 
+    public function templates()
+    {
+        $config = $this->app['config']->get('motor-cms-page-templates', []);
+        $this->app['config']->set('motor-cms-page-templates', array_replace_recursive(require __DIR__ . '/../../config/motor-cms-page-templates.php', $config));
+    }
+
+
     public function components()
     {
         $config = $this->app['config']->get('motor-cms-page-components', []);
-        $this->app['config']->set('motor-cms-page-components',
-            array_replace_recursive(require __DIR__ . '/../../config/motor-cms-page-components.php', $config));
+        $this->app['config']->set('motor-cms-page-components', array_replace_recursive(require __DIR__ . '/../../config/motor-cms-page-components.php', $config));
     }
 
 

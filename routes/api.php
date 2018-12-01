@@ -12,12 +12,3 @@ Route::group([
 	Route::get('profile/{api_token}/votes/entries', 'ProfileController@vote_entries');
 	Route::post('profile/{api_token}/votes/{entry}/vote', 'ProfileController@vote_save');
 });
-
-Route::group([
-	'middleware' => [ 'web', 'auth:visitor', 'bindings' ],
-	'namespace'  => 'Partymeister\Frontend\Http\Controllers\Api',
-	'prefix'     => 'ajax',
-	'as'         => 'ajax.',
-], function () {
-	Route::post('votes/{api_token}/submit', 'VotesController@store')->name('votes.submit');
-});
