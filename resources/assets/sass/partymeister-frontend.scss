@@ -16,3 +16,9 @@
 @import "~toastr/toastr";
 @import "./modules/partymeister-rating";
 @import "~flag-icon-css/sass/flag-icon";
+
+
+// Partymeister Core
+.vertical.menu li a i, .vertical.menu li a svg {
+  min-width: 25px;
+}
