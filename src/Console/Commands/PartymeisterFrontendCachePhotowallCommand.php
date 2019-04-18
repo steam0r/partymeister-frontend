@@ -38,8 +38,8 @@ class PartymeisterFrontendCachePhotowallCommand extends Command
     public function handle()
     {
         $basePath = base_path('public/photowall');
-        $cachePath = base_path('public/photowall/cache/2018');
-        $source = '2018_forrealz';
+        $cachePath = base_path('public/photowall/cache');
+        $source = '';
         if (!is_dir($cachePath)) {
             mkdir($cachePath);
         }
@@ -48,7 +48,7 @@ class PartymeisterFrontendCachePhotowallCommand extends Command
         }
 
 
-        foreach (Storage::disk('photowall')->allFiles($source) as $file) {
+        foreach (Storage::disk('photowall')->files($source) as $file) {
             $split = explode('/', $file);
             $name = array_values(array_slice($split, -1))[0];
             //$target = str_replace($source, '2018', $);

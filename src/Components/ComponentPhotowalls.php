@@ -83,7 +83,7 @@ class ComponentPhotowalls {
 
         foreach (scandir($dir) as $file)
         {
-            if (in_array($file, $ignored) || strpos($file, 'booth2018') === FALSE)
+            if (in_array($file, $ignored) || strpos(strtolower($file), '.jpg') === FALSE)
             {
                 continue;
             }
