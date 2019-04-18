@@ -22,6 +22,10 @@ class ComponentPhotowalls {
     {
         $this->photos = $this->scanDir(base_path('public/photowall/cache'));
 
+        if (!$this->photos) {
+            return false;
+        }
+
         $limit = 90;
         $page = array_get($_GET, 'page', 1)-1;
 

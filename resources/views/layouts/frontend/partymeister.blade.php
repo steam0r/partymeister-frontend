@@ -4,11 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>PAGE TITLE</title>
+    <title>{{$version->name}} | {{config('motor-backend-project.name_frontend')}}</title>
 
     <link href="{{ mix('/css/partymeister-frontend.css') }}" rel="stylesheet" type="text/css"/>
-{{--<link href="{{ asset('/css/revision2018.css') }}" rel="stylesheet" type="text/css"/>--}}
-<!-- Custom styles for this template -->
     @yield('view-styles')
     <style type="text/css">
     </style>
