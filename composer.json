@@ -12,9 +12,9 @@
     }
   ],
   "require": {
-    "partymeister/core": "0.3.*",
-    "motor/cms": "0.6.*",
-    "partymeister/slides": "0.3.*"
+    "partymeister/core": "0.4.*",
+    "partymeister/slides": "0.4.*",
+    "motor/cms": "0.8.*"
   },
   "autoload": {
     "psr-4": {
@@ -28,5 +28,6 @@
       ]
     }
   },
-  "minimum-stability": "dev"
+  "minimum-stability": "dev",
+  "prefer-stable" : true
 }
