@@ -8,22 +8,6 @@
 
     <link href="{{ mix('/css/partymeister-frontend.css') }}" rel="stylesheet" type="text/css"/>
     @yield('view-styles')
-    <style type="text/css">
-        .footer {
-            height: 5rem;
-            background: #52b9ef;
-            color: #fff;
-            padding: 1rem;
-        }
-
-        .footer .menu a {
-            margin-top: 0.25rem;
-            color: #333;
-        }
-        .footer .menu a:hover {
-            text-decoration: underline;
-        }
-    </style>
 </head>
 <body>
 @include('motor-cms::layouts.frontend.partials.navigation')
