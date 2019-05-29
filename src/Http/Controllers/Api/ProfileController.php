@@ -5,6 +5,7 @@ namespace Partymeister\Frontend\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
 use Motor\Backend\Http\Controllers\Controller;
@@ -114,7 +115,7 @@ class ProfileController extends Controller {
 		$visitor->password = bcrypt($password);
 		$visitor->group = $groups;
 		$visitor->country_iso_3166_1 = $country;
-		$visitor->api_token = str_random(60);
+		$visitor->api_token = Str::random(60);
 		$visitor->save();
 
 		$accessKey->visitor_id = $visitor->id;

@@ -3,6 +3,7 @@
 namespace Partymeister\Frontend\Components;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Motor\CMS\Models\PageVersionComponent;
 
 class ComponentPhotowalls {
@@ -27,7 +28,7 @@ class ComponentPhotowalls {
         }
 
         $limit = 90;
-        $page = array_get($_GET, 'page', 1)-1;
+        $page = Arr::get($_GET, 'page', 1)-1;
 
         $this->photos = array_chunk($this->photos, $limit);
 
