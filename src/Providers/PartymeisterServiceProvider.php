@@ -34,26 +34,39 @@ class PartymeisterServiceProvider extends ServiceProvider
     }
 
 
+    /**
+     * Set configuration files for publishing
+     */
     public function config()
     {
-        //$this->mergeConfigFrom(__DIR__ . '/../../config/partymeister-slides-fonts.php', 'partymeister-slides-fonts');
     }
 
 
+    /**
+     * Register templates from config file
+     */
     public function templates()
     {
         $config = $this->app['config']->get('motor-cms-page-templates', []);
-        $this->app['config']->set('motor-cms-page-templates', array_replace_recursive(require __DIR__ . '/../../config/motor-cms-page-templates.php', $config));
+        $this->app['config']->set('motor-cms-page-templates',
+            array_replace_recursive(require __DIR__ . '/../../config/motor-cms-page-templates.php', $config));
     }
 
 
+    /**
+     * Register components from config file
+     */
     public function components()
     {
         $config = $this->app['config']->get('motor-cms-page-components', []);
-        $this->app['config']->set('motor-cms-page-components', array_replace_recursive(require __DIR__ . '/../../config/motor-cms-page-components.php', $config));
+        $this->app['config']->set('motor-cms-page-components',
+            array_replace_recursive(require __DIR__ . '/../../config/motor-cms-page-components.php', $config));
     }
 
 
+    /**
+     * Publish all necessary asset resources
+     */
     public function publishResourceAssets()
     {
         $assets = [
@@ -66,6 +79,9 @@ class PartymeisterServiceProvider extends ServiceProvider
     }
 
 
+    /**
+     * Register artisan commands
+     */
     public function registerCommands()
     {
         if ($this->app->runningInConsole()) {
@@ -76,17 +92,26 @@ class PartymeisterServiceProvider extends ServiceProvider
     }
 
 
+    /**
+     * Set migration path
+     */
     public function migrations()
     {
         $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
     }
 
 
+    /**
+     * Merge permission config file
+     */
     public function permissions()
     {
     }
 
 
+    /**
+     * Set routes
+     */
     public function routes()
     {
         if ( ! $this->app->routesAreCached()) {
@@ -96,6 +121,9 @@ class PartymeisterServiceProvider extends ServiceProvider
     }
 
 
+    /**
+     * Set translation path
+     */
     public function translations()
     {
         $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', 'partymeister-frontend');
@@ -106,6 +134,9 @@ class PartymeisterServiceProvider extends ServiceProvider
     }
 
 
+    /**
+     * Set view path
+     */
     public function views()
     {
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'partymeister-frontend');
@@ -116,11 +147,17 @@ class PartymeisterServiceProvider extends ServiceProvider
     }
 
 
+    /**
+     * Add route model bindings
+     */
     public function routeModelBindings()
     {
     }
 
 
+    /**
+     * Merge backend navigation items from configuration file
+     */
     public function navigationItems()
     {
     }

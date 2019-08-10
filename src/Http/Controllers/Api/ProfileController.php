@@ -16,13 +16,16 @@ use Partymeister\Competitions\Models\Vote;
 use Partymeister\Competitions\Models\VoteCategory;
 use Partymeister\Competitions\Transformers\Entry\OldApiTransformer;
 use Partymeister\Competitions\Transformers\Entry\SimpleTransformer;
-use Partymeister\Competitions\Transformers\EntryTransformer;
 use Partymeister\Core\Models\Visitor;
 use Partymeister\Core\Transformers\VisitorTransformer;
 
 class ProfileController extends Controller {
 
-	public function login(Request $request)
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function login(Request $request)
 	{
 		// Get login from payload
 		$login = $request->get('login');
@@ -60,6 +63,11 @@ class ProfileController extends Controller {
 			] + $data, 200);
 	}
 
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
 	public function register(Request $request)
 	{
 		// Get handle from payload
@@ -132,6 +140,10 @@ class ProfileController extends Controller {
 	}
 
 
+    /**
+     * @param $api_token
+     * @return \Illuminate\Http\JsonResponse
+     */
 	public function entries($api_token)
 	{
 		// Check if token exists and load visitor
@@ -153,6 +165,11 @@ class ProfileController extends Controller {
 			] + $data);
 	}
 
+
+    /**
+     * @param $api_token
+     * @return \Illuminate\Http\JsonResponse
+     */
 	public function vote_live($api_token)
 	{
 		// Check if token exists and load visitor
@@ -200,6 +217,12 @@ class ProfileController extends Controller {
 			] + $fractal->createData($resource)->toArray());
 	}
 
+
+    /**
+     * @param Request $request
+     * @param         $api_token
+     * @return \Illuminate\Http\JsonResponse
+     */
 	public function vote_entries(Request $request, $api_token)
 	{
 		// Check if token exists and load visitor
@@ -240,6 +263,13 @@ class ProfileController extends Controller {
 			] + $fractal->createData($resource)->toArray());
 	}
 
+
+    /**
+     * @param Request $request
+     * @param         $api_token
+     * @param Entry   $entry
+     * @return \Illuminate\Http\JsonResponse
+     */
 	public function vote_save(Request $request, $api_token, Entry $entry)
 	{
 		// Check if token exists and load visitor

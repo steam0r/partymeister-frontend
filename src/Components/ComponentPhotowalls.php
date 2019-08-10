@@ -14,11 +14,21 @@ class ComponentPhotowalls {
     protected $currentPage;
     protected $currentBlock;
 
+
+    /**
+     * ComponentPhotowalls constructor.
+     * @param PageVersionComponent $pageVersionComponent
+     */
     public function __construct(PageVersionComponent $pageVersionComponent)
     {
         $this->pageVersionComponent = $pageVersionComponent;
     }
 
+
+    /**
+     * @param Request $request
+     * @return bool|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index(Request $request)
     {
         $this->photos = $this->scanDir(base_path('public/photowall/cache'));
@@ -66,6 +76,11 @@ class ComponentPhotowalls {
         return $this->render();
     }
 
+
+    /**
+     * @param $dir
+     * @return array|bool
+     */
     protected function scanDir($dir)
     {
         $ignored = array(
@@ -97,6 +112,10 @@ class ComponentPhotowalls {
         return ($files) ? $files : FALSE;
     }
 
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function render()
     {
         return view(config('motor-cms-page-components.components.'.$this->pageVersionComponent->component_name.'.view'), ['pages' => $this->pages, 'currentPage' => $this->currentPage, 'currentBlock' => $this->currentBlock, 'photos' => $this->photos]);

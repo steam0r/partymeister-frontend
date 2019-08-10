@@ -24,6 +24,9 @@ class PartymeisterFrontendCachePhotowallCommand extends Command
     protected $description = 'Make symlinks to all uploaded files';
 
 
+    /**
+     * @param $directory
+     */
     protected function mkdir($directory)
     {
         if ( ! is_dir($directory)) {
@@ -63,6 +66,5 @@ class PartymeisterFrontendCachePhotowallCommand extends Command
                 }
             }
         }
-
     }
 }

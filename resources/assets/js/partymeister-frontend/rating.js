@@ -4,7 +4,7 @@
 ;(function ($, window, document, undefined) {
 
 // Create the defaults once
-    var pluginName = "partymeisterRating",
+    let pluginName = "partymeisterRating",
         defaults = {
             readOnly: false,
             stars: 5,
@@ -23,7 +23,7 @@
 
     // The actual plugin constructor
     function PartymeisterRating(element, options) {
-        var plugin = this;
+        let plugin = this;
         this.element = element;
 
         this.options = $.extend({}, defaults, options);
@@ -54,7 +54,7 @@
             $('<input />', {name: 'points', value: that.options.value, type: 'hidden'}).appendTo(that.element);
 
             for (i = 1; i <= that.options.stars; i++) {
-                var attrs = {
+                let attrs = {
                     'data-points': i,
                     'data-on': that.options.starOn,
                     'data-off': that.options.starOff,
@@ -62,7 +62,7 @@
                     'title': that.options.hints[i + 1]
                 };
 
-                var star = $('<div/>', attrs).appendTo(that.element);
+                let star = $('<div/>', attrs).appendTo(that.element);
 
                 if (!that.options.readonly) {
                     star.on('mouseout', that, that._bindMouseOut);
@@ -78,7 +78,7 @@
         },
 
         buildCancel: function (that) {
-            var attrs = {
+            let attrs = {
                 'data-points': 0,
                 'data-on': that.options.cancelOn,
                 'data-off': that.options.cancelOff,
@@ -96,7 +96,7 @@
         },
 
         buildNegative: function (that) {
-            var attrs = {
+            let attrs = {
                 'data-points': -1,
                 'data-on': that.options.negativeOn,
                 'data-off': that.options.negativeOff,
@@ -124,7 +124,7 @@
 
         _bindMouseOver: function (e) {
 
-            var points = parseInt($(this).data('points'));
+            let points = parseInt($(this).data('points'));
 
             if (!$(this).hasClass('star')) {
                 $(this).removeClass($(this).data('off'));
@@ -135,7 +135,7 @@
         },
 
         _bindMouseOut: function (e) {
-            var actualPoints = parseInt($(this).parent().find('input[name="points"]').val());
+            let actualPoints = parseInt($(this).parent().find('input[name="points"]').val());
             if (isNaN(actualPoints)) {
                 actualPoints = 0;
             }
