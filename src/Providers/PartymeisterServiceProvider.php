@@ -2,13 +2,13 @@
 
 namespace Partymeister\Frontend\Providers;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Route;
 use Partymeister\Frontend\Console\Commands\PartymeisterFrontendCachePhotowallCommand;
-use Partymeister\Slides\Console\Commands\PartymeisterSlidesGenerateCompetitionCommand;
-use Partymeister\Slides\Console\Commands\PartymeisterSlidesGenerateEntryCommand;
 
+/**
+ * Class PartymeisterServiceProvider
+ * @package Partymeister\Frontend\Providers
+ */
 class PartymeisterServiceProvider extends ServiceProvider
 {
 
@@ -43,73 +43,6 @@ class PartymeisterServiceProvider extends ServiceProvider
 
 
     /**
-     * Register templates from config file
-     */
-    public function templates()
-    {
-        $config = $this->app['config']->get('motor-cms-page-templates', []);
-        $this->app['config']->set('motor-cms-page-templates',
-            array_replace_recursive(require __DIR__ . '/../../config/motor-cms-page-templates.php', $config));
-    }
-
-
-    /**
-     * Register components from config file
-     */
-    public function components()
-    {
-        $config = $this->app['config']->get('motor-cms-page-components', []);
-        $this->app['config']->set('motor-cms-page-components',
-            array_replace_recursive(require __DIR__ . '/../../config/motor-cms-page-components.php', $config));
-    }
-
-
-    /**
-     * Publish all necessary asset resources
-     */
-    public function publishResourceAssets()
-    {
-        $assets = [
-            __DIR__ . '/../../resources/assets/sass' => resource_path('assets/sass'),
-            __DIR__ . '/../../resources/assets/npm'  => resource_path('assets/npm'),
-            __DIR__ . '/../../resources/assets/js'   => resource_path('assets/js'),
-        ];
-
-        $this->publishes($assets, 'partymeister-frontend-install-resources');
-    }
-
-
-    /**
-     * Register artisan commands
-     */
-    public function registerCommands()
-    {
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                PartymeisterFrontendCachePhotowallCommand::class,
-            ]);
-        }
-    }
-
-
-    /**
-     * Set migration path
-     */
-    public function migrations()
-    {
-        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
-    }
-
-
-    /**
-     * Merge permission config file
-     */
-    public function permissions()
-    {
-    }
-
-
-    /**
      * Set routes
      */
     public function routes()
@@ -118,6 +51,14 @@ class PartymeisterServiceProvider extends ServiceProvider
             require __DIR__ . '/../../routes/web.php';
             require __DIR__ . '/../../routes/api.php';
         }
+    }
+
+
+    /**
+     * Add route model bindings
+     */
+    public function routeModelBindings()
+    {
     }
 
 
@@ -148,17 +89,76 @@ class PartymeisterServiceProvider extends ServiceProvider
 
 
     /**
-     * Add route model bindings
+     * Merge backend navigation items from configuration file
      */
-    public function routeModelBindings()
+    public function navigationItems()
     {
     }
 
 
     /**
-     * Merge backend navigation items from configuration file
+     * Merge permission config file
      */
-    public function navigationItems()
+    public function permissions()
     {
+    }
+
+
+    /**
+     * Register artisan commands
+     */
+    public function registerCommands()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                PartymeisterFrontendCachePhotowallCommand::class,
+            ]);
+        }
+    }
+
+
+    /**
+     * Set migration path
+     */
+    public function migrations()
+    {
+        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
+    }
+
+
+    /**
+     * Publish all necessary asset resources
+     */
+    public function publishResourceAssets()
+    {
+        $assets = [
+            __DIR__ . '/../../resources/assets/sass' => resource_path('assets/sass'),
+            __DIR__ . '/../../resources/assets/npm'  => resource_path('assets/npm'),
+            __DIR__ . '/../../resources/assets/js'   => resource_path('assets/js'),
+        ];
+
+        $this->publishes($assets, 'partymeister-frontend-install-resources');
+    }
+
+
+    /**
+     * Register components from config file
+     */
+    public function components()
+    {
+        $config = $this->app['config']->get('motor-cms-page-components', []);
+        $this->app['config']->set('motor-cms-page-components',
+            array_replace_recursive(require __DIR__ . '/../../config/motor-cms-page-components.php', $config));
+    }
+
+
+    /**
+     * Register templates from config file
+     */
+    public function templates()
+    {
+        $config = $this->app['config']->get('motor-cms-page-templates', []);
+        $this->app['config']->set('motor-cms-page-templates',
+            array_replace_recursive(require __DIR__ . '/../../config/motor-cms-page-templates.php', $config));
     }
 }

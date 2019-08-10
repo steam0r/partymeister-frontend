@@ -2,10 +2,15 @@
 
 namespace Partymeister\Frontend\Console\Commands;
 
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Image\Image;
 
+/**
+ * Class PartymeisterFrontendCachePhotowallCommand
+ * @package Partymeister\Frontend\Console\Commands
+ */
 class PartymeisterFrontendCachePhotowallCommand extends Command
 {
 
@@ -22,17 +27,6 @@ class PartymeisterFrontendCachePhotowallCommand extends Command
      * @var string
      */
     protected $description = 'Make symlinks to all uploaded files';
-
-
-    /**
-     * @param $directory
-     */
-    protected function mkdir($directory)
-    {
-        if ( ! is_dir($directory)) {
-            mkdir($directory);
-        }
-    }
 
 
     /**
@@ -61,10 +55,21 @@ class PartymeisterFrontendCachePhotowallCommand extends Command
                     Image::load($basePath . '/' . $file)->width(1280)->save($cachePath . '/' . $name);
 
                     $this->info($file . ' converted');
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $this->error($e->getMessage());
                 }
             }
+        }
+    }
+
+
+    /**
+     * @param $directory
+     */
+    protected function mkdir($directory)
+    {
+        if ( ! is_dir($directory)) {
+            mkdir($directory);
         }
     }
 }

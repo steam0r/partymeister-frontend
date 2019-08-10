@@ -2,16 +2,42 @@
 
 namespace Partymeister\Frontend\Components;
 
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\View\View;
 use Motor\CMS\Models\PageVersionComponent;
 
-class ComponentPhotowalls {
+/**
+ * Class ComponentPhotowalls
+ * @package Partymeister\Frontend\Components
+ */
+class ComponentPhotowalls
+{
 
+    /**
+     * @var PageVersionComponent
+     */
     protected $pageVersionComponent;
+
+    /**
+     * @var
+     */
     protected $photos;
+
+    /**
+     * @var
+     */
     protected $pages;
+
+    /**
+     * @var
+     */
     protected $currentPage;
+
+    /**
+     * @var
+     */
     protected $currentBlock;
 
 
@@ -27,27 +53,24 @@ class ComponentPhotowalls {
 
     /**
      * @param Request $request
-     * @return bool|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return bool|Factory|View
      */
     public function index(Request $request)
     {
         $this->photos = $this->scanDir(base_path('public/photowall/cache'));
 
-        if (!$this->photos) {
+        if ( ! $this->photos) {
             return false;
         }
 
         $limit = 90;
-        $page = Arr::get($_GET, 'page', 1)-1;
+        $page  = Arr::get($_GET, 'page', 1) - 1;
 
         $this->photos = array_chunk($this->photos, $limit);
 
-        if (isset($this->photos[$page]))
-        {
+        if (isset($this->photos[$page])) {
             $this->currentBlock = $this->photos[$page];
-        }
-        else
-        {
+        } else {
             $this->currentBlock = $this->photos[0];
         }
 
@@ -68,10 +91,9 @@ class ComponentPhotowalls {
         //    }
         //}
 
-        $this->pages = count($this->photos);
-        $this->currentPage = $page+1;
-        $this->photos = $this->currentBlock;
-
+        $this->pages       = count($this->photos);
+        $this->currentPage = $page + 1;
+        $this->photos      = $this->currentBlock;
 
         return $this->render();
     }
@@ -83,24 +105,22 @@ class ComponentPhotowalls {
      */
     protected function scanDir($dir)
     {
-        $ignored = array(
+        $ignored = [
             '.',
             '..',
             '.svn',
             '.htaccess',
             'Thumbs.db'
-        );
+        ];
 
-        $files = array();
+        $files = [];
 
-        if (!is_dir($dir)) {
+        if ( ! is_dir($dir)) {
             return false;
         }
 
-        foreach (scandir($dir) as $file)
-        {
-            if (in_array($file, $ignored) || strpos(strtolower($file), '.jpg') === FALSE)
-            {
+        foreach (scandir($dir) as $file) {
+            if (in_array($file, $ignored) || strpos(strtolower($file), '.jpg') === false) {
                 continue;
             }
             $files[$file] = $file;
@@ -109,16 +129,22 @@ class ComponentPhotowalls {
         arsort($files);
         $files = array_keys($files);
 
-        return ($files) ? $files : FALSE;
+        return ( $files ) ? $files : false;
     }
 
 
     /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Factory|View
      */
     public function render()
     {
-        return view(config('motor-cms-page-components.components.'.$this->pageVersionComponent->component_name.'.view'), ['pages' => $this->pages, 'currentPage' => $this->currentPage, 'currentBlock' => $this->currentBlock, 'photos' => $this->photos]);
+        return view(config('motor-cms-page-components.components.' . $this->pageVersionComponent->component_name . '.view'),
+            [
+                'pages'        => $this->pages,
+                'currentPage'  => $this->currentPage,
+                'currentBlock' => $this->currentBlock,
+                'photos'       => $this->photos
+            ]);
     }
 
 }
