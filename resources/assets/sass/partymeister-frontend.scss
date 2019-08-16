@@ -4,6 +4,8 @@
 // Foundation
 @import "~foundation-sites/scss/foundation";
 
+@import '~motor-cms/resources/assets/sass/frontend.scss';
+
 // Include Everything (True) for the Flex Grid :);
 @include foundation-everything(true);
 
