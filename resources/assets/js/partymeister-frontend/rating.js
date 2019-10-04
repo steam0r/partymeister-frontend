@@ -51,7 +51,7 @@
         },
 
         buildStars: function (that) {
-            $('<input />', {name: 'points', value: that.options.value, type: 'hidden'}).appendTo(that.element);
+            let starContianer = $('<input />', {name: 'points', value: that.options.value, type: 'hidden'}).appendTo(that.element);
 
             for (i = 1; i <= that.options.stars; i++) {
                 let attrs = {
@@ -71,10 +71,10 @@
                 }
 
                 that._stars.push(star);
-            }
 
+            }
             // Trigger highlight method
-            that._switchHighlightClasses(star, that.options.value, that);
+            that._switchHighlightClasses(starContianer, that.options.value, that);
         },
 
         buildCancel: function (that) {
