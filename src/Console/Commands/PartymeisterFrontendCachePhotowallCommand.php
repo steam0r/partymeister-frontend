@@ -39,10 +39,10 @@ class PartymeisterFrontendCachePhotowallCommand extends Command
         $basePath  = base_path('public/photowall');
         $cachePath = base_path('public/photowall/cache');
         $source    = '';
-        if ( ! is_dir($cachePath)) {
+        if (! is_dir($cachePath)) {
             mkdir($cachePath);
         }
-        if ( ! is_dir($cachePath . '/' . $source)) {
+        if (! is_dir($cachePath . '/' . $source)) {
             mkdir($cachePath . '/' . $source);
         }
 
@@ -50,7 +50,7 @@ class PartymeisterFrontendCachePhotowallCommand extends Command
             $split = explode('/', $file);
             $name  = array_values(array_slice($split, -1))[0];
             //$target = str_replace($source, '2018', $);
-            if ( ! file_exists($cachePath . '/' . $name)) {
+            if (! file_exists($cachePath . '/' . $name)) {
                 try {
                     Image::load($basePath . '/' . $file)->width(1280)->save($cachePath . '/' . $name);
 
@@ -68,7 +68,7 @@ class PartymeisterFrontendCachePhotowallCommand extends Command
      */
     protected function mkdir($directory)
     {
-        if ( ! is_dir($directory)) {
+        if (! is_dir($directory)) {
             mkdir($directory);
         }
     }

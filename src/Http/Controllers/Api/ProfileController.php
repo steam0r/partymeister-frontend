@@ -47,7 +47,7 @@ class ProfileController extends Controller
             ], 403);
         }
 
-        if ( ! Auth::guard('visitor')->attempt([
+        if (! Auth::guard('visitor')->attempt([
             'name'     => $login,
             'password' => $password
         ])) {
@@ -101,7 +101,7 @@ class ProfileController extends Controller
         $visitor = Visitor::where('name', $login)->first();
 
         // Check if user is already registered
-        if ( ! is_null($visitor)) {
+        if (! is_null($visitor)) {
             return response()->json([
                 'status'  => 403,
                 'message' => 'Profile already registered'
@@ -192,8 +192,7 @@ class ProfileController extends Controller
         }
 
         $competition = $live_voting->competition;
-        if ($competition->voting_enabled == true && strtotime($competition->updated_at) <= time() - 300) // allow live voting to stay open for 5 minutes
-        {
+        if ($competition->voting_enabled == true && strtotime($competition->updated_at) <= time() - 300) { // allow live voting to stay open for 5 minutes
             return response()->json([
                 'status'  => 204,
                 'message' => 'No entries found'
@@ -238,7 +237,7 @@ class ProfileController extends Controller
                    ->where('competitions.voting_enabled', true)
                    ->where('entries.status', 1);
 
-        if ( ! is_null($request->get('competition_id'))) {
+        if (! is_null($request->get('competition_id'))) {
             $query->where('competition_id', $request->get('competition_id'));
         }
 

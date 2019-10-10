@@ -47,7 +47,7 @@ class PartymeisterServiceProvider extends ServiceProvider
      */
     public function routes()
     {
-        if ( ! $this->app->routesAreCached()) {
+        if (! $this->app->routesAreCached()) {
             require __DIR__ . '/../../routes/web.php';
             require __DIR__ . '/../../routes/api.php';
         }
@@ -147,8 +147,10 @@ class PartymeisterServiceProvider extends ServiceProvider
     public function components()
     {
         $config = $this->app['config']->get('motor-cms-page-components', []);
-        $this->app['config']->set('motor-cms-page-components',
-            array_replace_recursive(require __DIR__ . '/../../config/motor-cms-page-components.php', $config));
+        $this->app['config']->set(
+            'motor-cms-page-components',
+            array_replace_recursive(require __DIR__ . '/../../config/motor-cms-page-components.php', $config)
+        );
     }
 
 
@@ -158,7 +160,9 @@ class PartymeisterServiceProvider extends ServiceProvider
     public function templates()
     {
         $config = $this->app['config']->get('motor-cms-page-templates', []);
-        $this->app['config']->set('motor-cms-page-templates',
-            array_replace_recursive(require __DIR__ . '/../../config/motor-cms-page-templates.php', $config));
+        $this->app['config']->set(
+            'motor-cms-page-templates',
+            array_replace_recursive(require __DIR__ . '/../../config/motor-cms-page-templates.php', $config)
+        );
     }
 }

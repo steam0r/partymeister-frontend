@@ -59,7 +59,7 @@ class ComponentPhotowalls
     {
         $this->photos = $this->scanDir(base_path('public/photowall/cache'));
 
-        if ( ! $this->photos) {
+        if (! $this->photos) {
             return false;
         }
 
@@ -115,7 +115,7 @@ class ComponentPhotowalls
 
         $files = [];
 
-        if ( ! is_dir($dir)) {
+        if (! is_dir($dir)) {
             return false;
         }
 
@@ -129,7 +129,7 @@ class ComponentPhotowalls
         arsort($files);
         $files = array_keys($files);
 
-        return ( $files ) ? $files : false;
+        return ($files) ? $files : false;
     }
 
 
@@ -138,13 +138,14 @@ class ComponentPhotowalls
      */
     public function render()
     {
-        return view(config('motor-cms-page-components.components.' . $this->pageVersionComponent->component_name . '.view'),
+        return view(
+            config('motor-cms-page-components.components.' . $this->pageVersionComponent->component_name . '.view'),
             [
                 'pages'        => $this->pages,
                 'currentPage'  => $this->currentPage,
                 'currentBlock' => $this->currentBlock,
                 'photos'       => $this->photos
-            ]);
+            ]
+        );
     }
-
 }
