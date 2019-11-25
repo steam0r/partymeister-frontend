@@ -119,17 +119,17 @@ class ProfileController extends Controller
         }
 
         // Create user
-        $visitor                     = new Visitor();
-        $visitor->name               = $login;
-        $visitor->password           = bcrypt($password);
-        $visitor->group              = $groups;
+        $visitor = new Visitor();
+        $visitor->name = $login;
+        $visitor->password = bcrypt($password);
+        $visitor->group = $groups;
         $visitor->country_iso_3166_1 = $country;
-        $visitor->api_token          = Str::random(60);
+        $visitor->api_token = Str::random(60);
         $visitor->save();
 
-        $accessKey->visitor_id    = $visitor->id;
+        $accessKey->visitor_id = $visitor->id;
         $accessKey->registered_at = date('Y-m-d H:i:s');
-        $accessKey->ip_address    = $request->ip();
+        $accessKey->ip_address = $request->ip();
         $accessKey->save();
 
         $data = fractal($visitor, new VisitorTransformer())->toArray();
@@ -199,13 +199,13 @@ class ProfileController extends Controller
             ], 204);
         }
         $entries = $live_voting->competition->entries()
-                                            ->where('status', '=', 1)
-                                            ->where('sort_position', '<=', $live_voting->sort_position)
-                                            ->orderBy('sort_position', 'DESC')
-                                            ->get();
+            ->where('status', '=', 1)
+            ->where('sort_position', '<=', $live_voting->sort_position)
+            ->orderBy('sort_position', 'DESC')
+            ->get();
 
         $fractal = new Manager();
-        $fractal->parseIncludes('vote:visitor_id(' . $visitor->id . ')');
+        $fractal->parseIncludes('vote:visitor_id('.$visitor->id.')');
         $resource = new Collection($entries, new SimpleTransformer());
 
         return response()->json([
@@ -232,10 +232,10 @@ class ProfileController extends Controller
             ], 404);
         }
         $query = DB::table('entries')
-                   ->select('entries.id')
-                   ->join('competitions', 'entries.competition_id', '=', 'competitions.id')
-                   ->where('competitions.voting_enabled', true)
-                   ->where('entries.status', 1);
+            ->select('entries.id')
+            ->join('competitions', 'entries.competition_id', '=', 'competitions.id')
+            ->where('competitions.voting_enabled', true)
+            ->where('entries.status', 1);
 
         if (! is_null($request->get('competition_id'))) {
             $query->where('competition_id', $request->get('competition_id'));
@@ -248,7 +248,7 @@ class ProfileController extends Controller
         $entries = Entry::whereIn('id', $entryIds)->get();
 
         $fractal = new Manager();
-        $fractal->parseIncludes('vote:visitor_id(' . $visitor->id . ')');
+        $fractal->parseIncludes('vote:visitor_id('.$visitor->id.')');
         $resource = new Collection($entries, new SimpleTransformer());
 
         return response()->json([
@@ -317,16 +317,16 @@ class ProfileController extends Controller
         // Create new vote item if this one doesn't exist yet
         $vote = $visitor->votes()->where('vote_category_id', $voteCategory->id)->where('entry_id', $entry->id)->first();
         if (is_null($vote)) {
-            $vote                 = new Vote();
-            $vote->visitor_id     = $visitor->id;
+            $vote = new Vote();
+            $vote->visitor_id = $visitor->id;
             $vote->competition_id = $entry->competition_id;
-            $vote->entry_id       = $entry->id;
-            $vote->ip_address     = $request->ip();
+            $vote->entry_id = $entry->id;
+            $vote->ip_address = $request->ip();
         }
-        $vote->points           = $points;
+        $vote->points = $points;
         $vote->vote_category_id = $voteCategory->id;
-        $vote->comment          = $request->get('comment', '');
-        $vote->special_vote     = $request->get('favourite', 0);
+        $vote->comment = $request->get('comment', '');
+        $vote->special_vote = $request->get('favourite', 0);
 
         $vote->save();
 
