@@ -31,6 +31,7 @@ class PartymeisterServiceProvider extends ServiceProvider
         $this->publishResourceAssets();
         $this->components();
         $this->templates();
+        merge_local_config_with_db_configuration_variables('partymeister-frontend');
     }
 
 
