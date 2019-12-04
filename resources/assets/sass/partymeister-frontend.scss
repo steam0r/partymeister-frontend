@@ -24,3 +24,9 @@
 .vertical.menu li a i, .vertical.menu li a svg {
   min-width: 25px;
 }
+.medium-editor-toolbar {
+  display: none !important;
+}
+.footer {
+  z-index: 15000;
+}
