@@ -12,9 +12,9 @@
     }
   ],
   "require": {
-    "partymeister/core": "0.5.*",
-    "partymeister/slides": "0.5.*",
-    "motor-cms/motor-cms": "0.9.*"
+    "partymeister/core": "0.6.*",
+    "partymeister/slides": "0.6.*",
+    "motor-cms/motor-cms": "0.10.*"
   },
   "autoload": {
     "classmap": [
