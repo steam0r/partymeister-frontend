@@ -4,6 +4,103 @@
 @import '~mini.css/dist/mini-dark';
 @import "./modules/partymeister-rating";
 
+
+@import url("//use.typekit.net/gsc8zsi.css");
+@import url("//fonts.googleapis.com/css2?family=Work+Sans");
+
+html,
+* {
+  font-family: 'Work Sans', sans-serif;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  color: #7381ff;
+  background: var(--back-color);
+}
+
+blockquote:before {
+  position: absolute;
+  top: calc(0rem - var(--universal-padding));
+  left: 0;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  content: "\201C";
+  color: var(--blockquote-color);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-self: center;
+  position: relative;
+  width: 100%;
+  background: var(--card-back-color);
+  color: #7381ff;
+  border: 5px solid #7381ff !important;
+  border-radius: var(--universal-border-radius);
+  margin: var(--universal-margin);
+  overflow: hidden;
+}
+
+legend {
+  box-sizing: border-box;
+  display: table;
+  max-width: 100%;
+  white-space: normal;
+  font-weight: 900;
+  padding: calc(var(--universal-padding) / 2);
+}
+
+[type=checkbox]:checked:before {
+  content: "\2713";
+  font-family: 'Work Sans', sans-serif;
+  font-size: calc(1rem + var(--universal-padding) / 2);
+  top: calc(0rem - var(--universal-padding));
+  left: calc(var(--universal-padding) / 4);
+}
+
+.drawer-toggle:before {
+  display: inline-block;
+  position: relative;
+  vertical-align: bottom;
+  content: "\A0\2261\A0";
+  font-family: 'Work Sans', sans-serif;
+  font-size: 1.5em;
+}
+
+[type=checkbox].drawer + * .drawer-close:before {
+  display: block;
+  content: "\D7";
+  color: var(--drawer-close-color);
+  position: relative;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 2rem;
+  line-height: 1;
+  text-align: center;
+}
+
+[type=checkbox].modal + div .card .modal-close:before {
+  display: block;
+  content: "\D7";
+  color: var(--modal-close-color);
+  position: relative;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 1.75rem;
+  line-height: 1;
+  text-align: center;
+}
+
+@media screen and (min-width: 320px) {
+  .card {
+    max-width: 90%;
+  }
+}
+
 .special {
   background-color: $partymeisterSpecialVoteBackgroundColor;
 }
